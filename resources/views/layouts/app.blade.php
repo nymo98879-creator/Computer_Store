@@ -23,8 +23,8 @@
             <nav class="h-full">
                 <ul class="flex justify-evenly items-center w-full h-full">
                     <li><a href="{{ route('home') }}" class="text-2xl hover:text-blue-600">Home</a></li>
-                    <li><a href="{{ route('product') }}" class="text-2xl hover:text-blue-600">Product</a></li>
-                    <li><a href="{{ route('category') }}" class="text-2xl hover:text-blue-600">Category</a></li>
+                    <li><a href="{{ route('fproduct') }}" class="text-2xl hover:text-blue-600">Product</a></li>
+                    <li><a href="{{ route('fcategory') }}" class="text-2xl hover:text-blue-600">Category</a></li>
                     <li><a href="{{ route('accessories') }}" class="text-2xl hover:text-blue-600">Accessories</a></li>
                     <li><a href="{{ route('contact') }}" class="text-2xl hover:text-blue-600">Contact</a></li>
                 </ul>
@@ -118,8 +118,8 @@
             <div>
                 <ul class="flex space-x-6">
                     <li><a href="{{ route('home') }}" class="hover:text-blue-600 text-lg">Home</a></li>
-                    <li><a href="{{ route('product') }}" class="hover:text-blue-600 text-lg">Product</a></li>
-                    <li><a href="{{ route('category') }}" class="hover:text-blue-600 text-lg">Category</a></li>
+                    <li><a href="{{ route('fproduct') }}" class="hover:text-blue-600 text-lg">Product</a></li>
+                    <li><a href="{{ route('fcategory') }}" class="hover:text-blue-600 text-lg">Category</a></li>
                     <li><a href="{{ route('accessories') }}" class="hover:text-blue-600 text-lg">Accessories</a></li>
                     <li><a href="{{ route('contact') }}" class="hover:text-blue-600 text-lg">Contact</a></li>
                 </ul>
