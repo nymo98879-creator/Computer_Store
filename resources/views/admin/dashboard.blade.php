@@ -33,39 +33,6 @@
         <canvas id="salesChart" height="100"></canvas>
     </div>
 
-    <!-- Low Stock Products -->
-    {{-- <div class="bg-white grid grid-cols-1 shadow-lg rounded-2xl p-6 ">
-        <h2 class="text-lg font-semibold text-gray-800 mb-4">Low Stock Products</h2>
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left border-collapse">
-                <thead class="bg-gradient-to-r from-red-500 to-red-600 text-white uppercase text-sm font-semibold">
-                    <tr>
-                        <th class="px-6 py-3">Image</th>
-                        <th class="px-6 py-3">Product Name</th>
-                        <th class="px-6 py-3">Stock</th>
-                        <th class="px-6 py-3">Price</th>
-                        <th class="px-6 py-3 text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                    @foreach($lowStockProducts ?? [] as $product)
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-3">
-                                <img src="{{ $product->image }}" class="w-14 h-14 rounded-lg object-cover" alt="">
-                            </td>
-                            <td class="px-6 py-3">{{ $product->name }}</td>
-                            <td class="px-6 py-3 text-red-600 font-bold">{{ $product->stock }}</td>
-                            <td class="px-6 py-3 text-green-600 font-semibold">${{ $product->price }}</td>
-                            <td class="px-6 py-3 text-center">
-                                <a href="{{ route('product.edit', $product->id) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg shadow">Edit</a>
-                                <a href="{{ route('product.delete', $product->id) }}" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg shadow ml-2">Delete</a>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div> --}}
 
 
     <!-- Chart.js -->

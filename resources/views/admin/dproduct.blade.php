@@ -3,6 +3,8 @@
 @section('title', 'Products')
 
 @section('content')
+@vite(['resources/js/admin/product.js'])
+
 <div class="p-6 bg-gray-100 min-h-screen" x-data="{ showForm: false }">
 
     <!-- Header -->
@@ -29,7 +31,7 @@
             <tbody class="divide-y divide-gray-200">
                 <tr class="hover:bg-gray-50 transition">
                     <td class="px-6 py-3">
-                        <img src="https://via.placeholder.com/60" class="w-14 h-14 rounded-lg object-cover" alt="">
+                        <img src="" class="w-14 h-14 rounded-lg object-cover" alt="">
                     </td>
                     <td class="px-6 py-3">Example Product</td>
                     <td class="px-6 py-3 text-green-600 font-semibold">$999</td>
@@ -41,6 +43,8 @@
                 </tr>
             </tbody>
         </table>
+
+
     </div>
 
     <!-- Popup Form -->

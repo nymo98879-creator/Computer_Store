@@ -45,12 +45,14 @@
                 <!-- Sidebar Categories Menu -->
                 <li x-data="{ open: false }" class="relative">
                     <!-- Main Category Button -->
-                    <button @click="open = !open"
-                        class="flex items-center w-full px-4 py-3 text-gray-700 rounded-xl hover:bg-blue-500 hover:text-white transition focus:outline-none">
-                        <a href="{{route('dcategory')}}"><i class="fas fa-tags w-5"></i><span
+                    <div class="flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-blue-500 hover:text-white transition">
+                        <a href="{{ route('dcategory') }}"><i class="fas fa-tags w-5 "></i><span
                                 class="ml-3 flex-1 text-left">Categories</span></a>
-                        <i :class="open ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" class="ml-2 w-4"></i>
-                    </button>
+                        <button @click="open = !open">
+                            {{-- class="flex items-center w-full px-4 py-3 text-gray-700 rounded-xl hover:bg-blue-500 hover:text-white transition focus:outline-none"> --}}
+                            <i :class="open ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" class="ml-2 w-4"></i>
+                        </button>
+                    </div>
 
                     <!-- Dropdown Sub-items (Initially hidden) -->
                     <ul x-show="open" x-transition class="mt-2 pl-8 space-y-1 text-gray-700">

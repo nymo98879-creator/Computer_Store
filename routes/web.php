@@ -39,23 +39,7 @@ Route::get('/contact', function () {
 })->name('contact'); // 👈 add name
 
 //Back
-// Route::get('/dashboard', function () {
-//     return view('admin.dashboard');
-// })->name('dashboard'); // 👈 add name
-// Route::get('/product', function () {
-//     return view('admin.dproduct');
-// })->name('dproduct'); // 👈 add name
-// Route::get('/dcategory', function () {
-//     return view('admin.dcategory');
-// })->name('dcategory'); // 👈 add name
 
-// Route::get('/order', function () {
-//     return view('admin.order');
-// })->name('order'); // 👈 add name
-
-// Route::get('/customer', function () {
-//     return view('admin.customer');
-// })->name('customer'); // 👈 add name
 Route::middleware(['admin.auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
