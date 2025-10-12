@@ -59,13 +59,19 @@
                         <li>
                             <a href=""
                                 class="block px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition">
-                                Laptop
+                                Laptops
                             </a>
                         </li>
                         <li>
                             <a href=""
                                 class="block px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition">
-                                Desktop
+                                Desktops
+                            </a>
+                        </li>
+                        <li>
+                            <a href=""
+                                class="block px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition">
+                                Monitors
                             </a>
                         </li>
                         <li>
@@ -78,13 +84,7 @@
                     </ul>
                 </li>
 
-                {{-- <li>
-                    <a href="{{ route('category') }}"
-                        class="flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-blue-500 hover:text-white transition">
-                        <i class="fas fa-tags w-5"></i>
-                        <span class="ml-3">Categories</span>
-                    </a>
-                </li> --}}
+
                 <li>
                     <a href="{{ route('order') }}"
                         class="flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-blue-500 hover:text-white transition">
@@ -97,6 +97,13 @@
                         class="flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-blue-500 hover:text-white transition">
                         <i class="fas fa-users w-5"></i>
                         <span class="ml-3">Customers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('banner') }}"
+                        class="flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-blue-500 hover:text-white transition">
+                        <i class="fa-solid fa-scroll"></i>
+                        <span class="ml-3">Banner</span>
                     </a>
                 </li>
                 <li class="mt-6">

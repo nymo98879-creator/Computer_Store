@@ -5,109 +5,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
+    <!-- Favicon -->
+    {{-- <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"> --}}
+    {{-- <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"> --}}
 
     @vite('resources/css/app.css')
+    <!-- Store Building Icon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23007bff' d='M20 18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z'/></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 </head>
 
 <body class="bg-gray-100">
     {{-- Navbar --}}
     {{-- <div class="h-[60px] w-full bg-gray-300 shadow-xl flex"> --}}
-        {{-- Navbar --}}
-        <header class="bg-white shadow-lg sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto flex justify-between items-center px-8 h-[70px]">
-                <!-- Left: Logo -->
-                <div class="flex items-center space-x-3">
-                    <i class="fa-solid fa-computer text-3xl text-blue-600"></i>
-                    <h1 class="text-3xl font-extrabold text-gray-800">KM <span class="text-blue-600">STORE</span></h1>
-                </div>
-
-                <!-- Center: Navigation -->
-                <nav class="hidden md:flex space-x-8">
-                    <a href="{{ route('home') }}"
-                        class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Home</a>
-                    <a href="{{ route('fproduct') }}"
-                        class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Product</a>
-                    <a href="{{ route('fcategory') }}"
-                        class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Category</a>
-                    <a href="{{ route('accessories') }}"
-                        class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Accessories</a>
-                    <a href="{{ route('contact') }}"
-                        class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Contact</a>
-                </nav>
-
-                <!-- Right: Search & Icons -->
-                <div class="flex items-center space-x-6">
-                    <div class="relative hidden md:block">
-                        <input type="text" placeholder="Search..."
-                            class="border rounded-full pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-500"></i>
-                    </div>
-                    <i
-                        class="fa-solid fa-cart-shopping text-xl text-gray-700 hover:text-blue-600 transition cursor-pointer"></i>
-                    <i id="user"
-                        class="fa-solid fa-user text-xl text-gray-700 hover:text-blue-600 transition cursor-pointer"></i>
-
-                    <!-- Mobile menu toggle -->
-                    <button id="menuToggle"
-                        class="md:hidden text-2xl text-gray-700 hover:text-blue-600 focus:outline-none">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-                </div>
+    {{-- Navbar --}}
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center px-8 h-[70px]">
+            <!-- Left: Logo -->
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-computer text-3xl text-blue-600"></i>
+                <h1 class="text-xl lg:text-3xl font-extrabold text-gray-800">KM <span class="text-blue-600">STORE</span>
+                </h1>
             </div>
 
-            <!-- Mobile Menu -->
-            <nav id="mobileMenu" class="hidden bg-gray-100 md:hidden flex-col space-y-3 py-4 px-6 border-t">
-                <a href="{{ route('home') }}" class="block text-lg text-gray-700 hover:text-blue-600">Home</a>
-                <a href="{{ route('fproduct') }}" class="block text-lg text-gray-700 hover:text-blue-600">Product</a>
-                <a href="{{ route('fcategory') }}" class="block text-lg text-gray-700 hover:text-blue-600">Category</a>
+            <!-- Center: Navigation -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="{{ route('home') }}"
+                    class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Home</a>
+                <a href="{{ route('fproduct') }}"
+                    class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Product</a>
+                <a href="{{ route('fcategory') }}"
+                    class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Category</a>
                 <a href="{{ route('accessories') }}"
-                    class="block text-lg text-gray-700 hover:text-blue-600">Accessories</a>
-                <a href="{{ route('contact') }}" class="block text-lg text-gray-700 hover:text-blue-600">Contact</a>
+                    class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Accessories</a>
+                <a href="{{ route('contact') }}"
+                    class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Contact</a>
             </nav>
 
-            <script>
-                const menuToggle = document.getElementById('menuToggle');
-                const mobileMenu = document.getElementById('mobileMenu');
+            <!-- Right: Search & Icons -->
+            <div class="flex items-center space-x-6">
+                <div class="relative hidden md:block">
+                    <input type="text" placeholder="Search..."
+                        class="border rounded-full pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-500"></i>
+                </div>
+                <i
+                    class="fa-solid fa-cart-shopping text-xl text-gray-700 hover:text-blue-600 transition cursor-pointer"></i>
+                <i id="user"
+                    class="fa-solid fa-user text-xl text-gray-700 hover:text-blue-600 transition cursor-pointer"></i>
 
-                menuToggle.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                });
-            </script>
-        </header>
+                <!-- Mobile menu toggle -->
+                <button id="menuToggle" class="md:hidden text-2xl text-gray-700 hover:text-blue-600 focus:outline-none">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
 
-        <form action="{{ url('/admin/login') }}" method="POST" id="loginForm"
-            class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+        <!-- Mobile Menu -->
+        <nav id="mobileMenu" class="hidden bg-gray-100 md:hidden flex-col space-y-3 py-4 px-6 border-t">
+            <a href="{{ route('home') }}" class="block text-lg text-gray-700 hover:text-blue-600">Home</a>
+            <a href="{{ route('fproduct') }}" class="block text-lg text-gray-700 hover:text-blue-600">Product</a>
+            <a href="{{ route('fcategory') }}" class="block text-lg text-gray-700 hover:text-blue-600">Category</a>
+            <a href="{{ route('accessories') }}" class="block text-lg text-gray-700 hover:text-blue-600">Accessories</a>
+            <a href="{{ route('contact') }}" class="block text-lg text-gray-700 hover:text-blue-600">Contact</a>
+        </nav>
+
+        <script>
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        </script>
+    </header>
+
+    <form action="{{ url('/admin/login') }}" method="POST" id="loginForm"
+        class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
     bg-white shadow-2xl rounded-3xl w-[400px] p-8 z-50 border border-gray-200
     {{ session('error') ? '' : 'hidden' }}">
-            @csrf
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
+        @csrf
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
 
-            @if (session('error'))
-                <p class="text-red-500 text-center mb-4">{{ session('error') }}</p>
-            @endif
+        @if (session('error'))
+            <p class="text-red-500 text-center mb-4">{{ session('error') }}</p>
+        @endif
 
-            <div class="mb-5">
-                <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email"
-                    class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required>
-            </div>
+        <div class="mb-5">
+            <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email"
+                class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
 
-            <div class="mb-6">
-                <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password"
-                    class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required>
-            </div>
+        <div class="mb-6">
+            <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password"
+                class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
 
-            <button type="submit"
-                class="w-full bg-blue-600 text-white font-semibold py-2 rounded-xl hover:bg-blue-700 transition duration-200">
-                Login
-            </button>
+        <button type="submit"
+            class="w-full bg-blue-600 text-white font-semibold py-2 rounded-xl hover:bg-blue-700 transition duration-200">
+            Login
+        </button>
 
-            <p class="text-sm text-gray-500 text-center mt-4">Only for Admin Access</p>
-        </form>
+        <p class="text-sm text-gray-500 text-center mt-4">Only for Admin Access</p>
+    </form>
     </div>
 
     <script>
