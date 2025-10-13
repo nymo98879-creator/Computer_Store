@@ -1,26 +1,41 @@
 @extends('layouts.app')
 
+
 @section('title', 'Products')
 
 @section('content')
-<div class="max-w-7xl mx-auto">
-    <h1 class="text-3xl font-bold mb-8 text-gray-800 text-center">Our Products</h1>
+<div class="p-8">
+    <h1 class="text-3xl font-bold mb-6">Products</h1>
 
-    <!-- Products Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        @foreach (range(1,8) as $i)
-        <div class="bg-white shadow-lg rounded-2xl overflow-hidden hover:scale-105 transition-transform">
-            <img src="https://via.placeholder.com/300x200" alt="Product Image" class="w-full h-48 object-cover">
-            <div class="p-4">
-                <h3 class="text-lg font-semibold mb-2">Product {{ $i }}</h3>
-                <p class="text-gray-600 mb-2">High quality product for your need.</p>
-                <p class="text-blue-600 font-bold text-lg mb-3">$ {{ rand(10, 100) }}</p>
-                <button class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 w-full">
-                    <i class="fa-solid fa-cart-plus mr-2"></i>Add to Cart
-                </button>
-            </div>
-        </div>
-        @endforeach
+    <div id="product-list" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Products will be inserted here by JS -->
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    // Fetch products from API
+    axios.get('/api/products')
+        .then(function(response) {
+            const products = response.data;
+            const container = document.getElementById('product-list');
+
+            products.forEach(product => {
+                const html = `
+                    <div class="bg-white rounded-xl shadow p-4">
+                        <img src="/storage/${product.image}" class="w-full h-48 object-cover rounded-lg mb-2">
+                        <h2 class="text-lg font-semibold">${product.name}</h2>
+                        <p class="text-gray-600">${product.description}</p>
+                        <p class="text-green-600 font-bold">$${parseFloat(product.price).toFixed(2)}</p>
+                        <p class="text-gray-700">Stock: ${product.stock}</p>
+                        <p class="text-indigo-600">${product.category ? product.category.name : 'No Category'}</p>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+        })
+        .catch(function(error) {
+            console.error('Error fetching products:', error);
+        });
+</script>
 @endsection

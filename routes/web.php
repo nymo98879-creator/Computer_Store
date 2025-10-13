@@ -22,9 +22,7 @@ use App\Http\Controllers\Admin\DProductController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
 //Front
 Route::get('/', function () {
     return view('FrontEnd.Home');
@@ -53,9 +51,9 @@ Route::middleware(['admin.auth'])->group(function () {
         return view('admin.dashboard');
     })->name('dashboard');
 
-    Route::get('/product', function () {
-        return view('admin.dproduct');
-    })->name('dproduct');
+    // Route::get('/product', function () {
+    //     return view('admin.dproduct');
+    // })->name('dproduct');
 
     Route::get('/dcategory', function () {
         return view('admin.dcategory');
@@ -71,33 +69,26 @@ Route::middleware(['admin.auth'])->group(function () {
     Route::get('/banner', function () {
         return view('admin.banner');
     })->name('banner');
-Route::get('/create', function(){
-return view('admin.create');
+    Route::get('/create', function () {
+        return view('admin.create');
+    });
 });
 
-});
 
 
-// Route::get('/admin/login', [AdminController::class, 'showLoginForm']);
+
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login');
 
-// Protect everything under admin/
-// Route::middleware(['admin.auth'])->group(function () {
-//     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-//     Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
-// });
+
 Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
-
-
+//
+    Route::get('admin/dproduct', [DProductController::class, 'index'])->name('admin.products.index');
+    // Route::get('admin/dproduct/create', [DProductController::class, 'create'])->name('admin.products.create');
+    Route::post('admin/dproduct', [DProductController::class, 'store'])->name('admin.products.store');
 });
 
 
 
-
-Route::prefix('admin')->group(function () {
-    Route::get('/products/create', [DProductController::class, 'create'])->name('admin.products.create');
-    Route::post('/products/store', [DProductController::class, 'store'])->name('admin.products.store');
-});

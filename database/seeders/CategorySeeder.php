@@ -13,10 +13,14 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         //
-        $categories = ['Laptop', 'Desktop', 'Monitor', 'Keyboard', 'Mouse', 'Headphones'];
+        Category::insert([
+            ['name' => 'Laptop'],
+            ['name' => 'Desktop'],
+            ['name' => 'Monitor'],
+            ['name' => 'Keyboard'],
+            ['name' => 'Mouse'],
+            ['name' => 'Headphones'],
+        ]);
 
-        foreach ($categories as $name) {
-            Category::create(['name' => $name]);
-        }
     }
 }

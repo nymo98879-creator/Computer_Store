@@ -35,8 +35,9 @@
                         <span class="ml-3">Dashboard</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('dproduct') }}"
+                 <li>
+                    {{-- <a href="{{ route('dproduct') }}" --}}
+                    <a href="{{ route('admin.products.index') }}"
                         class="flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-blue-500 hover:text-white transition">
                         <i class="fas fa-box w-5"></i>
                         <span class="ml-3">Products</span>
