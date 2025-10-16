@@ -6,31 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DProductController extends Controller
 {
-    // public function index()
-    // {
-    //     // Get all products with their category
-    //     $products = Product::with('category')->get();
-    //     // dd($products);
-    //     // dd($products->toArray());
 
-    //     // Pass data to the 'admin.dproduct' view
-    //     return view('admin.dproduct', compact('products'));
-    // }
+
     public function index()
     {
         $categories = Category::all();
         $products = Product::with('category')->get();
         return view('admin.dproduct', compact('products', 'categories'));
     }
-    // Show the create form
-    // public function create()
-    // {
-    //     $categories = Category::all();
-    //     return view('admin.product-create', compact('categories'));
-    // }
 
     // Store new product
     public function store(Request $request)
@@ -60,5 +47,18 @@ class DProductController extends Controller
 
         // ✅ Redirect back
         return redirect()->route('admin.products.index')->with('success', 'Product added successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            return redirect()->back()->with('error', 'Product not found.');
+        }
+
+        $product->delete();
+
+        return redirect()->back()->with('success', 'Product deleted successfully!');
     }
 }

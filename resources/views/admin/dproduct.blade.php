@@ -57,23 +57,23 @@
                                 </span>
                             </td>
 
-                            <!-- Action buttons -->
+                            {{-- Action buttons --}}
                             <td class="py-3 px-4 text-center">
                                 <div class="flex justify-center space-x-2">
                                     {{-- <a href="{{ route('admin.products.edit', $product->id) }}"
-                                   class="bg-yellow-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-yellow-600 transition">
-                                   ✏️ Edit
-                                </a> --}}
+                                        class="bg-yellow-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-yellow-600 transition">
+                                        ✏️ Edit
+                                    </a> --}}
 
-                                    {{-- <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
-                                      onsubmit="return confirm('Are you sure?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                            class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 transition">
-                                        🗑 Delete
-                                    </button>
-                                </form> --}}
+                                    <form action="{{ route('admin.dproduct.destroy', $product->id) }}" method="POST"
+                                        onsubmit="return confirm('Are you sure?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">
+                                            Delete
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -85,81 +85,81 @@
 
         <!-- Popup Form -->
         <div x-show="showForm" x-transition.opacity
-    class="fixed inset-0 bg-gray-500/50 flex items-center justify-center z-50" x-cloak>
-    <!-- Modal Box -->
-    <div @click.away="showForm = false" x-transition.scale
-        class="bg-white rounded-2xl shadow-2xl w-[90%] md:w-[500px] p-6 relative">
+            class="fixed inset-0 bg-gray-500/50 flex items-center justify-center z-50" x-cloak>
+            <!-- Modal Box -->
+            <div @click.away="showForm = false" x-transition.scale
+                class="bg-white rounded-2xl shadow-2xl w-[90%] md:w-[500px] p-6 relative">
 
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Add New Product</h2>
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Add New Product</h2>
 
-        <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-            @csrf
+                <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data"
+                    class="space-y-4">
+                    @csrf
 
-            {{-- Product Name --}}
-            <div>
-                <label class="block text-gray-600 mb-1">Product Name</label>
-                <input type="text" name="name"
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="Enter product name" required>
+                    {{-- Product Name --}}
+                    <div>
+                        <label class="block text-gray-600 mb-1">Product Name</label>
+                        <input type="text" name="name"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            placeholder="Enter product name" required>
+                    </div>
+
+                    {{-- Description --}}
+                    <div>
+                        <label class="block text-gray-600 mb-1">Description</label>
+                        <textarea name="description" rows="4"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            placeholder="Enter product description"></textarea>
+                    </div>
+
+                    {{-- Price --}}
+                    <div>
+                        <label class="block text-gray-600 mb-1">Price ($)</label>
+                        <input type="number" name="price" step="0.01"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            placeholder="Enter price" required>
+                    </div>
+
+                    {{-- Stock --}}
+                    <div>
+                        <label class="block text-gray-600 mb-1">Stock</label>
+                        <input type="number" name="stock"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            placeholder="Enter stock amount" required>
+                    </div>
+
+                    {{-- Category Dropdown (optional) --}}
+                    <div>
+                        <label class="block text-gray-600 mb-1">Category</label>
+                        <select name="category_id"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <option value="">-- Select Category --</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    {{-- Product Image --}}
+                    <div>
+                        <label class="block text-gray-600 mb-1">Product Image</label>
+                        <input type="file" name="image" accept="image/*"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none" required>
+                    </div>
+
+                    {{-- Buttons --}}
+                    <div class="flex justify-end gap-3 mt-4">
+                        <button type="button" @click="showForm = false"
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg">
+                            Cancel
+                        </button>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                            Save
+                        </button>
+                    </div>
+                </form>
             </div>
-
-           {{-- Description --}}
-            <div>
-                <label class="block text-gray-600 mb-1">Description</label>
-                <textarea name="description" rows="4"
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="Enter product description"></textarea>
-            </div>
-
-            {{-- Price --}}
-            <div>
-                <label class="block text-gray-600 mb-1">Price ($)</label>
-                <input type="number" name="price" step="0.01"
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="Enter price" required>
-            </div>
-
-            {{-- Stock --}}
-            <div>
-                <label class="block text-gray-600 mb-1">Stock</label>
-                <input type="number" name="stock"
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="Enter stock amount" required>
-            </div>
-
-            {{-- Category Dropdown (optional) --}}
-            <div>
-                <label class="block text-gray-600 mb-1">Category</label>
-                <select name="category_id"
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                    <option value="">-- Select Category --</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            {{-- Product Image --}}
-            <div>
-                <label class="block text-gray-600 mb-1">Product Image</label>
-                <input type="file" name="image" accept="image/*"
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none" required>
-            </div>
-
-            {{-- Buttons --}}
-            <div class="flex justify-end gap-3 mt-4">
-                <button type="button" @click="showForm = false"
-                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg">
-                    Cancel
-                </button>
-                <button type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                    Save
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
+        </div>
 
     </div>
 @endsection

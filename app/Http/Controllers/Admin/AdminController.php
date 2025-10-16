@@ -5,15 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Support\Facades\Hash;
 // use App\Http\Controllers\Controller;
 class AdminController extends Controller
 {
-    // Show login form
-    public function showLoginForm()
-    {
-        return view('admin.login');
-    }
+
+    // public function showLoginForm()
+    // {
+    //     return view('admin.login');
+    // }
+
 
     // Handle login
     public function login(Request $request)

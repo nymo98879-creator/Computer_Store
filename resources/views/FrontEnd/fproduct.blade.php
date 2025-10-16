@@ -5,12 +5,15 @@
 
 @section('content')
 <div class="p-8">
-    <h1 class="text-3xl font-bold mb-6">Products</h1>
+    <h1 class="text-5xl text-center  font-bold mb-10">All Products</h1>
 
     <div id="product-list" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
         <!-- Products will be inserted here by JS -->
     </div>
 </div>
+
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>

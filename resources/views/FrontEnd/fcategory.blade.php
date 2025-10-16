@@ -1,25 +1,48 @@
 @extends('layouts.app')
 
-@section('title', 'Categories')
+@section('title', 'Category')
 
 @section('content')
-<div class="max-w-6xl mx-auto">
-    <h1 class="text-3xl font-bold mb-8 text-gray-800 text-center">Shop by Category</h1>
+    <div id="category-card"></div>
+    <div id="product-list" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
 
-    <!-- Categories -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        @foreach (['Laptops', 'Phones', 'Headphones', 'Smartwatches', 'Monitors', 'Accessories'] as $category)
-        <div class="bg-white shadow-lg rounded-2xl hover:bg-blue-50 hover:shadow-2xl transition-all">
-            <img src="https://via.placeholder.com/400x250" alt="{{ $category }}" class="w-full h-56 object-cover rounded-t-2xl">
-            <div class="p-5 text-center">
-                <h3 class="text-xl font-semibold text-gray-800">{{ $category }}</h3>
-                <p class="text-gray-500 mt-2">Explore our best {{ strtolower($category) }} collection.</p>
-                <button class="mt-4 bg-blue-600 text-white px-5 py-2 rounded-xl hover:bg-blue-700">
-                    View Products
-                </button>
-            </div>
-        </div>
-        @endforeach
-    </div>
-</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        async function fetchCategoryWithProducts() {
+            try {
+                const response = await axios.get('/api/categories/1'); // API endpoint
+                const category = response.data;
+
+                // Display category info
+                const catContainer = document.getElementById('category-card');
+                catContainer.innerHTML = `
+            <h2 class="text-5xl text-center mb-10 font-bold">${category.name}</h2>
+            <p>${category.description || ''}</p>
+        `;
+
+                // Display products
+                const prodContainer = document.getElementById('product-list');
+                prodContainer.innerHTML = '';
+                category.products.forEach(product => {
+                    const html = `
+                <div class="bg-white rounded-xl shadow p-4">
+                    <img src="/storage/${product.image}" class="w-full h-48 object-cover rounded-lg mb-2">
+                    <h3 class="text-lg font-semibold">${product.name}</h3>
+                    <p class="text-gray-600">${product.description}</p>
+                    <p class="text-green-600 font-bold">$${parseFloat(product.price).toFixed(2)}</p>
+                    <p class="text-gray-700">Stock: ${product.stock}</p>
+                </div>
+            `;
+                    prodContainer.insertAdjacentHTML('beforeend', html);
+                });
+
+            } catch (error) {
+                console.error('Error fetching category:', error);
+            }
+        }
+
+        fetchCategoryWithProducts();
+    </script>
+
 @endsection

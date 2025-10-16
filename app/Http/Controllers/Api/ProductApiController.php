@@ -17,4 +17,6 @@ class ProductApiController extends Controller
         // Return JSON response
         return response()->json($products);
     }
+
+
 }
