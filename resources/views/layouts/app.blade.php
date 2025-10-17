@@ -5,9 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-    <!-- Favicon -->
-    {{-- <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"> --}}
-    {{-- <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"> --}}
 
     @vite('resources/css/app.css')
     <!-- Store Building Icon -->
@@ -17,8 +14,7 @@
 </head>
 
 <body class="bg-gray-100">
-    {{-- Navbar --}}
-    {{-- <div class="h-[60px] w-full bg-gray-300 shadow-xl flex"> --}}
+
     {{-- Navbar --}}
     <header class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex justify-between items-center px-8 h-[70px]">
@@ -50,11 +46,47 @@
                         class="border rounded-full pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-500"></i>
                 </div>
-                <i
-                    class="fa-solid fa-cart-shopping text-xl text-gray-700 hover:text-blue-600 transition cursor-pointer"></i>
-                <i id="user"
-                    class="fa-solid fa-user text-xl text-gray-700 hover:text-blue-600 transition cursor-pointer"></i>
+                {{-- <i
+                    class="fa-solid fa-cart-shopping text-xl text-gray-700 hover:text-blue-600 transition cursor-pointer"></i> --}}
+                <!-- Include Alpine.js -->
+                <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
+                <!-- Wrap icon + sidebar in one Alpine component -->
+                <div x-data="{ openCart: false }" class="relative">
+                    <div class="flex items-center space-x-6">
+
+
+                        <!-- Cart Icon -->
+                        <i class="fa-solid fa-cart-shopping text-xl text-gray-700 hover:text-blue-600 cursor-pointer"
+                            @click="openCart = true"></i>
+                    </div>
+
+                    <!-- Sidebar Cart -->
+                    <div x-show="openCart" x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+                        x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0"
+                        x-transition:leave-end="translate-x-full"
+                        class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg z-50 p-5" style="display: none;">
+                        <!-- Close Button -->
+                        <button @click="openCart = false" class="text-gray-500 hover:text-gray-700 mb-4">
+                            Close
+                        </button>
+
+                        <h2 class="text-2xl font-bold mb-4">Your Cart</h2>
+                        <ul>
+                            <li class="mb-2">Product 1 - $10</li>
+                            <li class="mb-2">Product 2 - $15</li>
+                            <li class="mb-2">Product 3 - $20</li>
+                        </ul>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                            Checkout
+                        </button>
+                    </div>
+                </div>
+
+                <div> <i id="user"
+                        class="fa-solid fa-user text-xl text-gray-700 hover:text-blue-600 transition cursor-pointer"></i>
+                </div>
                 <!-- Mobile menu toggle -->
                 <button id="menuToggle" class="md:hidden text-2xl text-gray-700 hover:text-blue-600 focus:outline-none">
                     <i class="fa-solid fa-bars"></i>
@@ -81,29 +113,28 @@
         </script>
     </header>
 
+    <!-- 🧾 LOGIN FORM -->
     <form action="{{ url('/admin/login') }}" method="POST" id="loginForm"
         class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-    bg-white shadow-2xl rounded-3xl w-[400px] p-8 z-50 border border-gray-200
-    {{ session('error') ? '' : 'hidden' }}">
+    bg-white shadow-2xl rounded-3xl w-[400px] p-8 z-50 border border-gray-200 {{ session('error') ? '' : 'hidden' }}">
         @csrf
-        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Login</h2>
 
         @if (session('error'))
             <p class="text-red-500 text-center mb-4">{{ session('error') }}</p>
         @endif
 
         <div class="mb-5">
-            <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email"
-                class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            <label class="block text-gray-700 font-semibold mb-2">Email</label>
+            <input type="email" name="email"
+                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500" value="{{ old('email') }}"
                 required>
         </div>
 
         <div class="mb-6">
-            <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password"
-                class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required>
+            <label class="block text-gray-700 font-semibold mb-2">Password</label>
+            <input type="password" name="password"
+                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500" required>
         </div>
 
         <button type="submit"
@@ -111,32 +142,86 @@
             Login
         </button>
 
-        <p class="text-sm text-gray-500 text-center mt-4">Only for Admin Access</p>
+        <p class="text-sm text-center mt-4">Don't have an account?
+            <a href="#" id="openRegister" class="text-blue-500 hover:underline">Register</a>
+        </p>
     </form>
-    </div>
 
+    <!-- 🧾 REGISTER FORM -->
+    <form action="{{ url('/register') }}" method="POST" id="registerForm"
+        class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+    bg-white shadow-2xl rounded-3xl w-[400px] p-8 z-50 border border-gray-200 hidden">
+        @csrf
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Register</h2>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">Name</label>
+            <input type="text" name="name"
+                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500" required>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">Email</label>
+            <input type="email" name="email"
+                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500" required>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">Password</label>
+            <input type="password" name="password"
+                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500" required>
+        </div>
+
+        <div class="mb-6">
+            <label class="block text-gray-700 font-semibold mb-2">Confirm Password</label>
+            <input type="password" name="password_confirmation"
+                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500" required>
+        </div>
+
+        <button type="submit"
+            class="w-full bg-green-600 text-white font-semibold py-2 rounded-xl hover:bg-green-700 transition duration-200">
+            Register
+        </button>
+
+        <p class="text-sm text-center mt-4">Already have an account?
+            <a href="#" id="openLogin" class="text-blue-500 hover:underline">Login</a>
+        </p>
+    </form>
     <script>
         const userIcon = document.getElementById('user');
         const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const openRegister = document.getElementById('openRegister');
+        const openLogin = document.getElementById('openLogin');
 
-        // ✅ Show / Hide form on icon click
+        // Show login when user icon clicked
         userIcon.addEventListener('click', (e) => {
-            e.stopPropagation(); // prevent the click from triggering window listener
             e.preventDefault();
             loginForm.classList.toggle('hidden');
+            registerForm.classList.add('hidden');
         });
 
-        // ✅ Hide form when clicking outside
+        // Toggle between login and register
+        openRegister?.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+        });
+
+        openLogin?.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+
+        // Hide when clicking outside
         window.addEventListener('click', (e) => {
-            if (!loginForm.contains(e.target) && e.target !== userIcon) {
+            if (!loginForm.contains(e.target) && !registerForm.contains(e.target) && e.target !== userIcon) {
                 loginForm.classList.add('hidden');
+                registerForm.classList.add('hidden');
             }
         });
     </script>
-
-
-
-    </div>
 
     {{-- Page Content --}}
     <div class="p-10">
@@ -173,7 +258,8 @@
             <div>
                 <h3 class="text-xl font-semibold text-white mb-3">Follow Us</h3>
                 <div class="flex space-x-5 text-2xl">
-                    <a href="#" class="hover:text-blue-500"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.facebook.com/?_rdc=1&_rdr#" target="_blank" class="hover:text-blue-500"><i
+                            class="fa-brands fa-facebook"></i></a>
                     <a href="#" class="hover:text-pink-500"><i class="fa-brands fa-instagram"></i></a>
                     <a href="#" class="hover:text-sky-400"><i class="fa-brands fa-twitter"></i></a>
                     <a href="#" class="hover:text-red-500"><i class="fa-brands fa-youtube"></i></a>

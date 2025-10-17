@@ -48,20 +48,16 @@ Route::get('/contact', function () {
     return view('FrontEnd.contact');
 })->name('contact'); // 👈 add name
 
+//Login and Redgister
+Route::get('/login', function () {
+    return view('FrontEnd.login');
+})->name('login');
 //Back
 
 Route::middleware(['admin.auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
-
-    // Route::get('/product', function () {
-    //     return view('admin.dproduct');
-    // })->name('dproduct');
-
-    Route::get('/dcategory', function () {
-        return view('admin.dcategory');
-    })->name('dcategory');
 
     Route::get('/order', function () {
         return view('admin.order');
@@ -73,40 +69,21 @@ Route::middleware(['admin.auth'])->group(function () {
     Route::get('/banner', function () {
         return view('admin.banner');
     })->name('banner');
-    Route::get('/create', function () {
-        return view('admin.create');
-    });
-
-    //Category
-    // Route::get('admin/category/laptop', function () {
-    //     return view('admin.category.laptop');
-    // })->name('admin/laptop');
-    // Route::get('admin/category/desktop', function () {
-    //     return view('admin.category.desktop');
-    // });
-    // Route::get('admin/category/monitor', function () {
-    //     return view('admin.category.monitor');
-    // });
-    // Route::get('admin/category/accessories', function () {
-    //     return view('admin.category.accessories');
-    // });
 });
 
 
 
-
+//Admin Login
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login');
-
-
-
-
+// Route::post('/login', [AdminController::class, 'login'])->name('login.submit');
+Route::post('/register', [AdminController::class, 'register'])->name('register.submit');
 Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
-//Dashboard
-    // Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/admin/dashboard', [DashboardController::class, 'counts'])->name('admin.dashboard');
+    //Dashboard
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
-// Product
+    // Product
     Route::get('/dproduct', [DProductController::class, 'index'])->name('admin.products.index');
     Route::post('/dproduct', [DProductController::class, 'store'])->name('admin.products.store');
     Route::get('/products/{id}/edit', [DProductController::class, 'edit'])->name('products.edit');
@@ -114,8 +91,6 @@ Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
     Route::delete('/dproduct/{id}', [DProductController::class, 'destroy'])->name('admin.dproduct.destroy');
 
     //Category
-    // Route::get('dcategory/laptop', [DCategoyLaptopController::class, 'index'])->name('admin.laptop.index');
-    // Route::put('/admin/dcategory-laptop/update/{id}', [DCategoyLaptopController::class, 'update'])->name('admin.dcategorylaptop.update');
     Route::get('/dcategory-laptop', [DCategoyLaptopController::class, 'index'])
         ->name('admin.laptop.index'); // page that shows the products
 
@@ -129,4 +104,9 @@ Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
     Route::get('dcategory/accessories', [DCategoryAccessoriesController::class, 'index'])->name('admin.accessories.index');
     Route::put('/dcategory-accessories/update/{id}', [DCategoryAccessoriesController::class, 'update'])
         ->name('admin.dcategoryaccessories.update'); // update route
+});
+
+//User Login
+Route::middleware(['customerAuth'])->group(function () {
+    Route::get('/customer/home', [AdminController::class, 'customerHome'])->name('customer.home');
 });

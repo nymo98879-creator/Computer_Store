@@ -12,10 +12,9 @@ class DCategoyLaptopController extends Controller
     //
     public function index()
     {
-        // $categories = Category::with('products')->get();
+
         $categories = Category::with('products')->find(1);
-        // dd($categories);
-        // $categories = collect([$category]);
+
         return view('admin.category.laptop', compact('categories'));
     }
     public function update(Request $request, $id)

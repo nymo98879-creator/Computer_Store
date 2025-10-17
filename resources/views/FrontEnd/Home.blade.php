@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', 'KM Store - Home')
@@ -28,19 +29,19 @@
                 Shop by <span class="text-blue-600">Category</span>
             </h2>
 
-            <div id="category-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 px-32 gap-8">
+            <div id="category-container"
+                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 px-8 md:px-32 gap-10">
                 <!-- Categories will be loaded here -->
             </div>
         </div>
     </section>
-
 
     <!-- Products Section -->
     <section class="py-16 bg-white">
         <div class="p-8">
             <h1 class="text-5xl text-center font-bold mb-10">Our Products</h1>
 
-            <div id="product-list" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div id="product-list" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
                 <!-- Products will be inserted here by JS -->
             </div>
         </div>
@@ -53,7 +54,6 @@
         <a href="{{ route('fproduct') }}"
             class="bg-white text-blue-700 px-8 py-3 rounded-full font-semibold hover:bg-gray-200 transition">
             Shop Deals
-
         </a>
     </section>
 
@@ -73,14 +73,34 @@
 
                     products.forEach(product => {
                         const html = `
-                            <div class="bg-white rounded-xl shadow p-4">
-                                <img src="/storage/${product.image}" class="w-full h-48 object-cover rounded-lg mb-2">
-                                <h2 class="text-lg font-semibold">${product.name}</h2>
-                                <p class="text-gray-600">${product.description}</p>
-                                <p class="text-green-600 font-bold">$${parseFloat(product.price).toFixed(2)}</p>
-                                <p class="text-gray-700">Stock: ${product.stock}</p>
-                                <p class="text-indigo-600">${product.category ? product.category.name : 'No Category'}</p>
+                        <div
+                            class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 group">
+                            <div class="relative">
+                                <img src="/storage/${product.image}" alt="${product.name}"
+                                    class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-300">
+                                <div
+                                    class="absolute top-2 right-2 bg-white/80 text-sm text-gray-700 px-3 py-1 rounded-full shadow">
+                                    ${product.category ? product.category.name : 'No Category'}
+                                </div>
                             </div>
+
+                            <div class="p-4 space-y-2">
+                                <h2 class="text-lg font-bold text-gray-800 truncate">${product.name}</h2>
+                                <p class="text-sm text-gray-500 h-10 overflow-hidden">${product.description}</p>
+
+                                <div class="flex items-center justify-between mt-3">
+                                    <span class="text-2xl font-extrabold text-green-600">
+                                        $${parseFloat(product.price).toFixed(2)}
+                                    </span>
+                                    <button
+                                        class="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                                        Add to Cart
+                                    </button>
+                                </div>
+
+                                <p class="text-xs text-gray-500 mt-1">Stock: ${product.stock}</p>
+                            </div>
+                        </div>
                         `;
                         container.insertAdjacentHTML('beforeend', html);
                     });
@@ -97,24 +117,25 @@
                     const container = document.getElementById('category-container');
                     response.data.forEach(category => {
                         const imagesHtml = category.images.map(img =>
-                            `<img src="/storage/${img}" class="w-40 h-40 object-cover rounded" />`
+                            `<img src="/storage/${img}" class="w-32 h-32 object-cover rounded-lg shadow-md transform group-hover:scale-105 transition duration-300" />`
                         ).join('');
 
                         const cardHtml = `
-                            <div class="bg-white rounded-xl h-[350px] shadow p-4 text-center hover:scale-105 transition-transform duration-300">
-                                <h3 class="font-bold text-3xl mb-2">${category.name}</h3>
-                                <div class="flex mt-10  h-[200px] justify-evenly gap-2">${imagesHtml}</div>
-                                <div><a href="" class="bg-blue-500 px-3 py-2 rounded-xl text-white">Shop Now</a></div>
-                            </div>
+                        <div
+                            class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 text-center group p-6">
+                            <div class="flex justify-center gap-3 mb-6">${imagesHtml}</div>
+                            <h3 class="font-bold text-2xl text-gray-800 mb-4 group-hover:text-blue-600 transition">
+                                ${category.name}
+                            </h3>
+                            <a href="{{ route('fproduct') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-semibold transition">
+                                Shop Now
+                            </a>
+                        </div>
                         `;
                         container.innerHTML += cardHtml;
                     });
                 })
                 .catch(err => console.error(err));
-
-
-
-
         });
     </script>
 
