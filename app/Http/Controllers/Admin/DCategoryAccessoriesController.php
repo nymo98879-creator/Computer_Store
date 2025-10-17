@@ -15,10 +15,14 @@ class DCategoryAccessoriesController extends Controller
         $categories = Category::with('products')->find(3);
         return view('admin.category.accessories', compact('categories'));
     }
+    //
     public function update(Request $request, $id)
     {
         // ✅ Find product
         $product = Product::findOrFail($id);
+        if ($product->category_id != 3) {
+            return redirect()->back()->with('error', 'You can only edit products in Category 3.');
+        }
 
         // ✅ Validate inputs
         $request->validate([

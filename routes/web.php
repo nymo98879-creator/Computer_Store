@@ -102,7 +102,7 @@ Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.logi
 
 Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
 //Dashboard
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    // Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/dashboard', [DashboardController::class, 'counts'])->name('admin.dashboard');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
