@@ -109,10 +109,24 @@ Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
 // Product
     Route::get('/dproduct', [DProductController::class, 'index'])->name('admin.products.index');
     Route::post('/dproduct', [DProductController::class, 'store'])->name('admin.products.store');
+    Route::get('/products/{id}/edit', [DProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{id}', [DProductController::class, 'update'])->name('products.update');
     Route::delete('/dproduct/{id}', [DProductController::class, 'destroy'])->name('admin.dproduct.destroy');
 
-//Category
-    Route::get('dcategory/laptop', [DCategoyLaptopController::class, 'index'])->name('admin.laptop.index');
+    //Category
+    // Route::get('dcategory/laptop', [DCategoyLaptopController::class, 'index'])->name('admin.laptop.index');
+    // Route::put('/admin/dcategory-laptop/update/{id}', [DCategoyLaptopController::class, 'update'])->name('admin.dcategorylaptop.update');
+    Route::get('/dcategory-laptop', [DCategoyLaptopController::class, 'index'])
+        ->name('admin.laptop.index'); // page that shows the products
+
+    Route::put('/dcategory-laptop/update/{id}', [DCategoyLaptopController::class, 'update'])
+        ->name('admin.dcategorylaptop.update'); // update route
+
     Route::get('dcategory/desktop', [DCategoyDesktopController::class, 'index'])->name('admin.desktop.index');
+    Route::put('/dcategory-desktop/update/{id}', [DCategoyDesktopController::class, 'update'])
+        ->name('admin.dcategorydesktop.update'); // update route
+
     Route::get('dcategory/accessories', [DCategoryAccessoriesController::class, 'index'])->name('admin.accessories.index');
+    Route::put('/dcategory-accessories/update/{id}', [DCategoryAccessoriesController::class, 'update'])
+        ->name('admin.dcategoryaccessories.update'); // update route
 });
