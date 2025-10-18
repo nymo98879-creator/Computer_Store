@@ -50,7 +50,7 @@ class AdminController extends Controller
 
             $request->session()->put('admin_logged_in', true);
             $request->session()->put('admin_name', $admin->name);
-            return redirect('dashboard');
+            return redirect('/admin/dashboard');
         }
 
         // 2️⃣ Try User login
@@ -65,11 +65,7 @@ class AdminController extends Controller
     }
 
 
-    // Admin dashboard
-    public function dashboard()
-    {
-        return view('admin.app');
-    }
+
 
     // Logout
     public function logout(Request $request)

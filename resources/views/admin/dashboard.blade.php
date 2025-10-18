@@ -11,7 +11,7 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-2">
             <div class="bg-white shadow-lg rounded-2xl p-6 border-t-4 border-blue-500">
                 <h2 class="text-gray-500 text-sm font-medium">Total Products</h2>
-                <p class="text-3xl font-bold text-gray-800 mt-2">{{ $products ?? 0}}</p>
+                <p class="text-3xl font-bold text-gray-800 mt-2">{{ $totalProduct??0}}</p>
             </div>
             <div class="bg-white shadow-lg rounded-2xl p-6 border-t-4 border-indigo-500">
                 <h2 class="text-gray-500 text-sm font-medium">Total Categories</h2>

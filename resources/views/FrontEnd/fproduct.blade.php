@@ -12,9 +12,6 @@
         </div>
     </div>
 
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         // Fetch products from API
@@ -59,11 +56,3 @@
             });
     </script>
 @endsection
-{{-- // <div class="bg-white rounded-xl shadow p-4">
-                    //     <img src="/storage/${product.image}" class="w-full h-48 object-cover rounded-lg mb-2">
-                    //     <h2 class="text-lg font-semibold">${product.name}</h2>
-                    //     <p class="text-gray-600">${product.description}</p>
-                    //     <p class="text-green-600 font-bold">$${parseFloat(product.price).toFixed(2)}</p>
-                    //     <p class="text-gray-700">Stock: ${product.stock}</p>
-                    //     <p class="text-indigo-600">${product.category ? product.category.name : 'No Category'}</p>
-                    // </div> --}}

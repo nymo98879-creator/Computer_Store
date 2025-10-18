@@ -21,7 +21,7 @@
         id="sidebar">
         <div class="text-center mb-8">
             {{-- <h1 class="text-2xl font-bold text-gray-800">Admin Panel</h1> --}}
-            <a href="{{ route('dashboard') }}" class="text-3xl font-bold text-gray-800">
+            <a href="{{ route('admin.dashboard') }}" class="text-3xl font-bold text-gray-800">
 
                 <span class="">Dashboard</span>
             </a>
@@ -29,7 +29,7 @@
         <nav class="flex-1">
             <ul class="space-y-3">
                 <li>
-                    <a href="{{ route('dashboard') }}"
+                    <a href="{{ route('admin.dashboard') }}"
                         class="flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-blue-500 hover:text-white transition">
                         <i class="fas fa-tachometer-alt w-5"></i>
                         <span class="ml-3">Dashboard</span>

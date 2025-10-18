@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\DCategoryController;
 use App\Http\Controllers\Admin\DCategoyDesktopController;
 use App\Http\Controllers\Admin\DCategoyLaptopController;
 use App\Http\Controllers\Admin\DashboardController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // use App\Http\Controllers\DProductController;
 
@@ -55,9 +56,9 @@ Route::get('/login', function () {
 //Back
 
 Route::middleware(['admin.auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    // Route::get('/dashboard', function () {
+    //     return view('admin.dashboard');
+    // })->name('dashboard');
 
     Route::get('/order', function () {
         return view('admin.order');
@@ -77,9 +78,11 @@ Route::middleware(['admin.auth'])->group(function () {
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login');
 // Route::post('/login', [AdminController::class, 'login'])->name('login.submit');
 Route::post('/register', [AdminController::class, 'register'])->name('register.submit');
+
 Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
     //Dashboard
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+        Route::get('/dashboard', [DashboardController::class, 'count'])->name('admin.dashboard');
 
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
@@ -89,6 +92,15 @@ Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
     Route::get('/products/{id}/edit', [DProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{id}', [DProductController::class, 'update'])->name('products.update');
     Route::delete('/dproduct/{id}', [DProductController::class, 'destroy'])->name('admin.dproduct.destroy');
+    Route::get('/count', [DashboardController::class, 'count'])->name('admin.product.count');
+
+
+
+
+
+    // Route::delete('/dproduct/count', [DProductController::class, 'count'])->name('admin.dproduct.count');
+
+
 
     //Category
     Route::get('/dcategory-laptop', [DCategoyLaptopController::class, 'index'])
