@@ -29,14 +29,14 @@
             <nav class="hidden md:flex space-x-8">
                 <a href="{{ route('home') }}"
                     class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Home</a>
-                <a href="{{ route('fproduct') }}"
+                <a href="{{ route('front.product') }}"
                     class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Product</a>
                 <a href="{{ route('fcategory') }}"
                     class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Category</a>
-                <a href="{{ route('accessories') }}"
+                <a href="{{ route('faccessories') }}"
                     class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Accessories</a>
-                <a href="{{ route('contact') }}"
-                    class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Contact</a>
+                {{-- <a href="{{ route('contact') }}"
+                    class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Contact</a> --}}
             </nav>
 
             <!-- Right: Search & Icons -->
@@ -97,10 +97,10 @@
         <!-- Mobile Menu -->
         <nav id="mobileMenu" class="hidden bg-gray-100 md:hidden flex-col space-y-3 py-4 px-6 border-t">
             <a href="{{ route('home') }}" class="block text-lg text-gray-700 hover:text-blue-600">Home</a>
-            <a href="{{ route('fproduct') }}" class="block text-lg text-gray-700 hover:text-blue-600">Product</a>
+            <a href="{{ route('front.product') }}" class="block text-lg text-gray-700 hover:text-blue-600">Product</a>
             <a href="{{ route('fcategory') }}" class="block text-lg text-gray-700 hover:text-blue-600">Category</a>
-            <a href="{{ route('accessories') }}" class="block text-lg text-gray-700 hover:text-blue-600">Accessories</a>
-            <a href="{{ route('contact') }}" class="block text-lg text-gray-700 hover:text-blue-600">Contact</a>
+            <a href="{{ route('faccessories') }}" class="block text-lg text-gray-700 hover:text-blue-600">Accessories</a>
+            {{-- <a href="{{ route('contact') }}" class="block text-lg text-gray-700 hover:text-blue-600">Contact</a> --}}
         </nav>
 
         <script>
@@ -246,11 +246,11 @@
                 <h3 class="text-xl font-semibold text-white mb-3">Quick Links</h3>
                 <ul class="space-y-2">
                     <li><a href="{{ route('home') }}" class="hover:text-blue-400 transition">Home</a></li>
-                    <li><a href="{{ route('fproduct') }}" class="hover:text-blue-400 transition">Products</a></li>
+                    <li><a href="{{ route('front.product') }}" class="hover:text-blue-400 transition">Products</a></li>
                     <li><a href="{{ route('fcategory') }}" class="hover:text-blue-400 transition">Categories</a></li>
-                    <li><a href="{{ route('accessories') }}" class="hover:text-blue-400 transition">Accessories</a>
+                    <li><a href="{{ route('faccessories') }}" class="hover:text-blue-400 transition">Accessories</a>
                     </li>
-                    <li><a href="{{ route('contact') }}" class="hover:text-blue-400 transition">Contact</a></li>
+                    {{-- <li><a href="{{ route('contact') }}" class="hover:text-blue-400 transition">Contact</a></li> --}}
                 </ul>
             </div>
 

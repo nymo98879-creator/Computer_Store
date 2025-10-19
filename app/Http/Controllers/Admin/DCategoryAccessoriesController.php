@@ -15,6 +15,7 @@ class DCategoryAccessoriesController extends Controller
         $categories = Category::with('products')->find(3);
         return view('admin.category.accessories', compact('categories'));
     }
+
     //
     public function update(Request $request, $id)
     {

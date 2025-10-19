@@ -11,6 +11,17 @@ use Illuminate\Support\Facades\DB;
 class DProductController extends Controller
 {
 
+    public function indexpiganate()
+    {
+        $products = Product::with('category')
+            ->orderBy('id', 'asc')
+            ->paginate(5); // 5 products per page
+
+        $categories = Category::orderBy('name', 'asc')->get();
+
+        return view('admin.dproduct', compact('products', 'categories'));
+    }
+
 
     public function index()
     {
@@ -18,6 +29,9 @@ class DProductController extends Controller
         $products = Product::with('category')->get();
         return view('admin.dproduct', compact('products', 'categories'));
     }
+
+
+
 
     // Store new product
     public function store(Request $request)

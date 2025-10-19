@@ -9,6 +9,9 @@
     <title>Admin Dashboard</title>
     <title>@yield('title')</title>
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
+ <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23007bff' d='M20 18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z'/></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.0/dist/cdn.min.js" defer></script>
 
@@ -103,7 +106,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('customer') }}"
+                    <a href="{{ route('admin.customer') }}"
                         class="flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-blue-500 hover:text-white transition">
                         <i class="fas fa-users w-5"></i>
                         <span class="ml-3">Customers</span>

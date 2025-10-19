@@ -19,7 +19,7 @@
             </thead>
             <tbody class="divide-y divide-gray-200">
                 <tr class="hover:bg-gray-50 transition">
-                    <td class="px-6 py-3">#ORD-1001</td>
+                    {{-- <td class="px-6 py-3">#ORD-1001</td>
                     <td class="px-6 py-3">John Doe</td>
                     <td class="px-6 py-3 text-green-600 font-semibold">$1,200</td>
                     <td class="px-6 py-3">
@@ -27,7 +27,7 @@
                             Completed
                         </span>
                     </td>
-                    <td class="px-6 py-3">2025-10-09</td>
+                    <td class="px-6 py-3">2025-10-09</td> --}}
                 </tr>
             </tbody>
         </table>

@@ -5,7 +5,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
+use App\Models\Category;
+use App\Models\Customer;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,9 @@ return view("admin.dashboard");
     public function count()
     {
         $totalProduct = Product::count();
-        return view('admin.dashboard', compact('totalProduct'));
+$totalCategories=Category::count();
+$totalCustomer=Customer::count();
+        return view('admin.dashboard', compact('totalProduct',"totalCategories","totalCustomer"));
     }
 
 
