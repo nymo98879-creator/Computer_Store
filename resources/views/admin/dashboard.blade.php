@@ -19,7 +19,7 @@
             </div>
             <div class="bg-white shadow-lg rounded-2xl p-6 border-t-4 border-green-500">
                 <h2 class="text-gray-500 text-sm font-medium">Total Orders</h2>
-                <p class="text-3xl font-bold text-gray-800 mt-2">{{ $totalOrders ?? 0 }}</p>
+                <p class="text-3xl font-bold text-gray-800 mt-2">{{ $totalOrder ?? 0 }}</p>
             </div>
             <div class="bg-white shadow-lg rounded-2xl p-6 border-t-4 border-yellow-500">
                 <h2 class="text-gray-500 text-sm font-medium">Total Customers</h2>

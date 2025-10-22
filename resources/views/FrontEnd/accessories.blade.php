@@ -1,45 +1,73 @@
-
 @extends('layouts.app')
 
 @section('title', 'Accessories')
 
 @section('content')
-    <div class="p-8 bg-gray-100 min-h-screen">
-
-        {{-- Category Info --}}
-        <div id="category-card" class="text-center mb-10">
-            <h2 class="text-5xl font-bold text-gray-800 mb-4">{{ $category->name }}</h2>
-            <p class="text-gray-600">{{ $category->description ?? '' }}</p>
+    <div class="p-8 bg-gray-50 min-h-screen">
+        {{-- 🧢 Category Info --}}
+        <div id="category-card" class="text-center mb-12">
+            <h2 class="text-5xl font-extrabold text-gray-800 mb-3">
+                🎧 {{ $category->name }}
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                {{ $category->description ?? 'Explore our premium computer accessories designed for performance and style.' }}
+            </p>
         </div>
 
-        {{-- Product List --}}
-        <div id="product-list" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {{-- 🛒 Product List --}}
+        <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
             @forelse ($category->products as $product)
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 group">
+                <div
+                    class="group bg-white rounded-2xl shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
+                    {{-- Product Image --}}
                     <div class="relative">
-                        <img src="{{ asset('storage/' . $product->image) }}"
-                             alt="{{ $product->name }}"
-                             class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                            class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
+
+                        {{-- Overlay on Hover --}}
+                        <div
+                            class="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <a href="{{ route('product.show', $product->id) }}"
+                                class="bg-white text-gray-800 text-sm px-4 py-2 rounded-lg shadow-md font-semibold hover:bg-indigo-600 hover:text-white transition">
+                                View Details
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="p-4 space-y-2">
-                        <h2 class="text-lg font-bold text-gray-800 truncate">{{ $product->name }}</h2>
-                        <p class="text-sm text-gray-500 h-10 overflow-hidden">{{ $product->description }}</p>
+                    {{-- Product Info --}}
+                    <div class="p-5">
+                        <h2 class="text-lg font-bold text-gray-800 truncate group-hover:text-indigo-600 transition-colors">
+                            {{ $product->name }}
+                        </h2>
+                        <p class="text-sm text-gray-500 mt-1 line-clamp-2">
+                            {{ $product->description }}
+                        </p>
 
-                        <div class="flex items-center justify-between mt-3">
-                            <span class="text-2xl font-extrabold text-green-600">
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-2xl font-bold text-green-600">
                                 ${{ number_format($product->price, 2) }}
                             </span>
-                            <button class="bg-indigo-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
-                                Add to Cart
-                            </button>
+
+                            {{-- <button
+                            class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition">
+                            <i class="fa-solid fa-cart-plus"></i> Add
+                        </button> --}}
+                            <form action="{{ route('product.cart', $product->id) }}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition">
+                                    Add
+                                </button>
+                            </form>
                         </div>
 
-                        <p class="text-xs text-gray-500 mt-1">Stock: {{ $product->stock }}</p>
+                        <p class="text-xs text-gray-500 mt-2">
+                            Stock: <span class="font-semibold text-gray-800">{{ $product->stock }}</span>
+                        </p>
                     </div>
                 </div>
             @empty
-                <p class="col-span-full text-center text-gray-500">
+                <p class="col-span-full text-center text-gray-500 text-lg font-medium">
                     No products found in this category.
                 </p>
             @endforelse

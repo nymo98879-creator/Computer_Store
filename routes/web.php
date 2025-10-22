@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 // 🧭 Controllers
 use App\Http\Controllers\Admin\AdminController;
+
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DCategoryAccessoriesController;
 use App\Http\Controllers\Admin\DProductController;
@@ -15,6 +16,8 @@ use App\Http\Controllers\Admin\FAccessoriesController;
 use App\Http\Controllers\Admin\FCategoryController;
 use App\Http\Controllers\Admin\FProductController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductDetailController;
 
 /*
@@ -34,7 +37,11 @@ Route::get('/fproduct', [FProductController::class, 'indexfront'])->name('front.
 Route::get('/fcategories', [FCategoryController::class, 'indexfront'])->name('fcategory');
 Route::get('/accessories', [FAccessoriesController::class, 'indexfront'])->name('faccessories');
 Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('product.show');
+Route::post('/product/{id}/cart', [CartController::class, 'add'])->name('product.cart');
+Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
+
+Route::post('/check_out', [OrderController::class, 'store'])->name('order.store');
 
 /* ============================
 | 🔐 AUTHENTICATION ROUTES
@@ -43,6 +50,7 @@ Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('pro
 // Admin Login and Register
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login');
 Route::post('/register', [AdminController::class, 'register'])->name('register.submit');
+Route::get('/customer/logout', [AdminController::class, 'logoutCustomer'])->name('customer.logout');
 
 
 /* ============================
@@ -85,7 +93,8 @@ Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
     // Customer Management
     Route::get('/customer', [CustomerController::class, 'index'])->name('admin.customer');
 
-
+    //Order
+    Route::get('/order_count', [OrderController::class, 'index'])->name('order.count');
 
 
 });
@@ -93,9 +102,9 @@ Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
 //Test View Page
 Route::middleware(['admin.auth'])->group(function () {
 
-    Route::get('/order', function () {
-        return view('admin.order');
-    })->name('order');
+    // Route::get('/order', function () {
+    //     return view('admin.order');
+    // })->name('order');
 
     Route::get('/banner', function () {
         return view('admin.banner');
@@ -109,4 +118,5 @@ Route::middleware(['admin.auth'])->group(function () {
 
 Route::middleware(['customerAuth'])->group(function () {
     Route::get('/customer/home', [AdminController::class, 'customerHome'])->name('customer.home');
+    // Route::post('/check_out', [OrderController::class, 'store'])->name('order.store');
 });

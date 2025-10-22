@@ -7,7 +7,8 @@
         showForm: false,
         showEditForm: false,
         editProduct: {}
-    }" <h1 class="text-3xl font-bold mb-6 text-gray-800">
+    }">
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">
         Products in Category: {{ $categories->name }}</h1>
 
         <div class="bg-white rounded-2xl shadow overflow-hidden">

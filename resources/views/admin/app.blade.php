@@ -99,7 +99,7 @@
 
 
                 <li>
-                    <a href="{{ route('order') }}"
+                    <a href="{{ route('order.count') }}"
                         class="flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-blue-500 hover:text-white transition">
                         <i class="fas fa-shopping-cart w-5"></i>
                         <span class="ml-3">Orders</span>
