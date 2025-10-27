@@ -13,10 +13,10 @@
                         <th class="px-6 py-3">ID</th>
                         <th class="px-6 py-3">Name</th>
                         <th class="px-6 py-3">Email</th>
-                        {{-- <th class="px-6 py-3">Phone</th>
-                        <th class="px-6 py-3">Address</th> --}}
+                        <th class="px-6 py-3">Phone</th>
+                        <th class="px-6 py-3">Address</th>
                         <th class="px-6 py-3">Joined</th>
-                        <th class="px-6 py-3 text-center">Status</th>
+                        {{-- <th class="px-6 py-3 text-center">Status</th> --}}
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -25,14 +25,14 @@
                             <td class="px-6 py-3">{{$cus->id}}</td>
                             <td class="px-6 py-3">{{$cus->name}}</td>
                             <td class="px-6 py-3">{{$cus->email}}</td>
-                            {{-- <td class="px-6 py-3">{{$cus->phone}}</td>
-                            <td class="px-6 py-3">{{$cus->address}}</td> --}}
+                            <td class="px-6 py-3">{{$cus->phone}}</td>
+                            <td class="px-6 py-3">{{$cus->address}}</td>
                             <td class="px-6 py-3">{{$cus->created_at}}</td>
-                            <td class="px-6 py-3 text-center">
+                            {{-- <td class="px-6 py-3 text-center">
                                 <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold">
                                     Active
                                 </span>
-                            </td>
+                            </td> --}}
                         </tr>
                     @endforeach
                 </tbody>

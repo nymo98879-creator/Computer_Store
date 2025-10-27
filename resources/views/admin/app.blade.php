@@ -112,13 +112,13 @@
                         <span class="ml-3">Customers</span>
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="{{ route('banner') }}"
                         class="flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-blue-500 hover:text-white transition">
                         <i class="fa-solid fa-scroll"></i>
                         <span class="ml-3">Banner</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="mt-6">
                     <a href="{{ url('/admin/logout') }}"
                         class="flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-red-500 hover:text-white transition">

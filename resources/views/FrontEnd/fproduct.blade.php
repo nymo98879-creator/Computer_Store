@@ -5,7 +5,7 @@
 @section('content')
     <div class="p-8 bg-gray-50 min-h-screen">
         <h1 class="text-5xl text-center font-extrabold mb-10 text-gray-800 tracking-tight">
-             All Products
+            All Products
         </h1>
 
         <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
@@ -29,7 +29,7 @@
                         <!-- Quick View Button (hover) -->
                         <div
                             class=" absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <a href="{{ route('product.show', $product->id) }}"
+                            <a {{-- href="{{ route('product.show', $product->id) }}" --}} href="{{ route('product.show', $product->id) }}?from=product"
                                 class="bg-white text-gray-800 text-sm px-4 py-2 rounded-lg shadow-md font-semibold hover:bg-indigo-600 hover:text-white transition">
                                 View Details
                             </a>
@@ -51,21 +51,18 @@
                                 ${{ number_format($product->price, 2) }}
                             </span>
 
-                            <form action="{{ route('product.cart', $product->id) }}" method="POST">
-                                @csrf
-                                <button type="submit"
-                                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition">
-                                    Add
-                                </button>
-                            </form>
+                            <!-- Stock Status -->
+                            <p class="text-xs mt-2 ">
+                                <span
+                                    class="font-semibold
+                                    {{ $product->stock <= 0 ? 'text-white bg-red-500 px-3 py-2 rounded-2xl' : ($product->stock <= 5 ? 'text-white bg-yellow-600 px-3 py-2 rounded-2xl' : 'text-white bg-green-600 px-3 py-2 rounded-2xl') }}">
+                                    {{ $product->stock > 0 ? 'In Stock' : 'Out of Stock' }}
+                                </span>
+                            </p>
 
 
                         </div>
 
-                        <p class="text-xs text-gray-500 mt-2">
-                            Stock:
-                            <span class="font-semibold text-gray-800">{{ $product->stock }}</span>
-                        </p>
                     </div>
                 </div>
             @empty
@@ -73,6 +70,21 @@
             @endforelse
         </div>
     </div>
+    <script>
+        // ✅ Save scroll position before leaving the page
+        window.addEventListener("beforeunload", () => {
+            localStorage.setItem("scrollPosition", window.scrollY);
+        });
+
+        // ✅ Restore scroll position when coming back
+        window.addEventListener("load", () => {
+            const scrollPosition = localStorage.getItem("scrollPosition");
+            if (scrollPosition) {
+                window.scrollTo(0, parseInt(scrollPosition));
+                localStorage.removeItem("scrollPosition"); // clear after using
+            }
+        });
+    </script>
 
 
 @endsection

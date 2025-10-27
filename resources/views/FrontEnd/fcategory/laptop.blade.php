@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Accessories')
+@section('title', 'Laptop')
 
 @section('content')
     <div class="p-8 bg-gray-50 min-h-screen">
-        {{-- 🧢 Category Info --}}
+        {{-- 💻 Category Info --}}
         <div id="category-card" class="text-center mb-12">
             <h2 class="text-5xl font-extrabold text-gray-800 mb-3">
-                🎧 {{ $category->name }}
+                💻 {{ $category->name }}
             </h2>
             <p class="text-gray-600 max-w-2xl mx-auto">
-                {{ $category->description ?? 'Explore our premium computer accessories designed for performance and style.' }}
+                {{ $category->description ?? 'Discover high-performance laptops built for work, gaming, and creativity.' }}
             </p>
         </div>
 
@@ -24,12 +24,12 @@
                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                             class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
 
-                        {{-- Overlay on Hover --}}
+                        {{-- Overlay --}}
                         <div
                             class="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <a
                             {{-- href="{{ route('product.show', $product->id) }}" --}}
-                            href="{{ route('product.show', $product->id) }}?from=accessories"
+                            href="{{ route('product.show', $product->id) }}?from=laptop"
                                 class="bg-white text-gray-800 text-sm px-4 py-2 rounded-lg shadow-md font-semibold hover:bg-indigo-600 hover:text-white transition">
                                 View Details
                             </a>
@@ -50,19 +50,13 @@
                                 ${{ number_format($product->price, 2) }}
                             </span>
 
-                            <!-- Stock Status -->
-                            <p class="text-xs mt-2 ">
+                            <p class="text-xs mt-2">
                                 <span
-                                    class="font-semibold
-                                    {{ $product->stock <= 0 ? 'text-white bg-red-500 px-3 py-2 rounded-2xl' : ($product->stock <= 5 ? 'text-white bg-yellow-600 px-3 py-2 rounded-2xl' : 'text-white bg-green-600 px-3 py-2 rounded-2xl') }}">
+                                    class="font-semibold {{ $product->stock <= 0 ? 'text-white bg-red-500 px-3 py-2 rounded-2xl' : ($product->stock <= 5 ? 'text-white bg-yellow-600 px-3 py-2 rounded-2xl' : 'text-white bg-green-600 px-3 py-2 rounded-2xl') }}">
                                     {{ $product->stock > 0 ? 'In Stock' : 'Out of Stock' }}
                                 </span>
                             </p>
                         </div>
-
-                        {{-- <p class="text-xs text-gray-500 mt-2">
-                            Stock: <span class="font-semibold text-gray-800">{{ $product->stock }}</span>
-                        </p> --}}
                     </div>
                 </div>
             @empty

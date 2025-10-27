@@ -18,7 +18,70 @@
             </button>
         </div>
 
-        <!-- Product Table -->
+        <!-- ✅ Low Stock Alert -->
+        {{-- @if ($lowStockProducts->count() > 0)
+            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mb-6 rounded-lg">
+                ⚠️ <strong>{{ $lowStockProducts->count() }}</strong> product(s) are low or out of stock.
+            </div>
+        @endif --}}
+
+        <form method="GET" action="{{ route('admin.products.index') }}" class="mb-4 flex justify-end">
+            <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search by product name..."
+                class="border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-lg">
+                Search
+            </button>
+
+            @if ($search)
+                <a href="{{ route('admin.products.index') }}"
+                    class="ml-2 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg text-gray-800">
+                    Reset
+                </a>
+            @endif
+        </form>
+
+        {{-- @if ($search)
+            <h2 class="text-xl font-bold mb-2">Search Results for "{{ $search }}"</h2>
+            @if ($products->count() > 0)
+                <table class="min-w-full border-collapse mb-8">
+                    <thead class="bg-gray-200 text-gray-700 uppercase text-sm">
+                        <tr>
+                            <th class="py-3 px-4 text-left">#</th>
+                            <th class="py-3 px-4 text-left">Image</th>
+                            <th class="py-3 px-4 text-left">Name</th>
+                            <th class="py-3 px-4 text-left">Price</th>
+                            <th class="py-3 px-4 text-left">Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($products as $product)
+                            <tr class="hover:bg-gray-50 transition">
+                                <td class="py-3 px-4">{{ $loop->iteration }}</td>
+                                <td class="py-3 px-4">
+                                    <img src="{{ asset('storage/' . $product->image) }}"
+                                        class="w-16 h-16 rounded-lg object-cover">
+                                </td>
+                                <td class="py-3 px-4">{{ $product->name }}</td>
+                                <td class="py-3 px-4">${{ number_format($product->price, 2) }}</td>
+                                <td class="py-3 px-4">
+                                    @if ($product->stock <= 0)
+                                        <span class="text-red-600 font-semibold">Out of Stock</span>
+                                    @elseif($product->stock <= 5)
+                                        <span class="text-yellow-600 font-semibold">Low ({{ $product->stock }})</span>
+                                    @else
+                                        <span class="text-green-600 font-semibold">In Stock ({{ $product->stock }})</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <p class="text-gray-600">No products found for "{{ $search }}"</p>
+            @endif
+        @endif --}}
+
+        <!-- ✅ Product Table -->
         <div class="bg-white rounded-2xl shadow overflow-hidden">
             <table class="min-w-full border-collapse">
                 <thead class="bg-gray-200 text-gray-700 uppercase text-sm">
@@ -33,48 +96,78 @@
                         <th class="py-3 px-4 text-center">Actions</th>
                     </tr>
                 </thead>
+
                 <tbody class="divide-y divide-gray-200">
                     @foreach ($products as $product)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr
+                            class="hover:bg-gray-50 transition 
+                            {{ $product->stock <= 0 ? 'bg-red-50' : ($product->stock <= 5 ? 'bg-yellow-50' : '') }}">
                             <td class="py-3 px-4 text-gray-700">{{ $loop->iteration }}</td>
+
+                            <!-- Product Image -->
                             <td class="py-3 px-4">
                                 <img src="{{ asset('storage/' . $product->image) }}"
                                     class="w-16 h-16 rounded-lg object-cover">
                             </td>
+
+                            <!-- Product Name -->
                             <td class="py-3 px-4 font-medium text-gray-800">{{ $product->name }}</td>
-                            <td class="py-3 px-4 text-gray-600 text-sm w-1/4 truncate">{{ $product->description }}</td>
-                            <td class="py-3 px-4 font-semibold text-green-600">${{ number_format($product->price, 2) }}</td>
-                            <td class="py-3 px-4 text-gray-700">{{ $product->stock }}</td>
+
+                            <!-- Description -->
+                            <td class="py-3 px-4 text-gray-600 text-sm w-1/4 truncate whitespace-pre-line">
+                                {{ $product->description }}
+                            </td>
+
+                            <!-- Price -->
+                            <td class="py-3 px-4 font-semibold text-green-600">
+                                ${{ number_format($product->price, 2) }}
+                            </td>
+
+                            <!-- Stock -->
+                            <td class="py-3 px-4">
+                                @if ($product->stock <= 0)
+                                    <span class="text-red-600 font-semibold">Out of Stock</span>
+                                @elseif ($product->stock <= 5)
+                                    <span class="text-yellow-600 font-semibold">Low ({{ $product->stock }})</span>
+                                @else
+                                    <span class="text-green-600 font-semibold">In Stock ({{ $product->stock }})</span>
+                                @endif
+                            </td>
+
+                            <!-- Category -->
                             <td class="py-3 px-4">
                                 <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm">
                                     {{ $product->category->name ?? 'No Category' }}
                                 </span>
                             </td>
+
+                            <!-- Actions -->
                             <td class="py-3 px-4 text-center">
                                 <div class="flex justify-center space-x-2">
-                                    <!-- ✅ Edit Button -->
+
+                                    <!-- Edit Button -->
                                     <button
                                         @click="showEditForm = true;
-                                    editProduct = {
-                                        id: {{ $product->id }},
-                                        name: '{{ addslashes($product->name) }}',
-                                        description: '{{ addslashes($product->description) }}',
-                                        price: {{ $product->price }},
-                                        stock: {{ $product->stock }},
-                                        category_id: {{ $product->category_id }},
-                                        image: '{{ asset('storage/' . $product->image) }}'
-                                    }"
+                                        editProduct = {
+                                            id: {{ $product->id }},
+                                            name: '{{ addslashes($product->name) }}',
+                                            description: '{{ addslashes($product->description) }}',
+                                            price: {{ $product->price }},
+                                            stock: {{ $product->stock }},
+                                            category_id: {{ $product->category_id }},
+                                            image: '{{ asset('storage/' . $product->image) }}'
+                                        }"
                                         class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 transition">
                                         Edit
                                     </button>
 
                                     <!-- Delete -->
                                     <form action="{{ route('admin.dproduct.destroy', $product->id) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure?')">
+                                        onsubmit="return confirm('Are you sure you want to delete this product?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">
+                                            class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition">
                                             Delete
                                         </button>
                                     </form>
@@ -84,12 +177,11 @@
                     @endforeach
                 </tbody>
             </table>
+
+            <!-- ✅ Pagination -->
             <div class="mt-6 flex justify-center">
                 {{ $products->onEachSide(1)->links('pagination::tailwind') }}
             </div>
-
-
-
         </div>
 
 
@@ -205,7 +297,7 @@
                     <div>
                         <label class="block text-gray-600 mb-1">Description</label>
                         <textarea name="description" rows="3" x-model="editProduct.description"
-                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea><br><br>
                     </div>
 
                     <!-- Price & Stock -->

@@ -47,18 +47,18 @@
                                     <span class="text-2xl font-bold text-green-600">
                                         ${{ number_format($product->price, 2) }}
                                     </span>
-                                    <form action="{{ route('product.cart', $product->id) }}" method="POST">
+                                    {{-- <form action="{{ route('product.cart', $product->id) }}" method="POST">
                                         @csrf
                                         <button type="submit"
                                             class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition">
                                             Add
                                         </button>
-                                    </form>
+                                    </form> --}}
                                 </div>
 
-                                <p class="text-xs text-gray-500 mt-2">
+                                {{-- <p class="text-xs text-gray-500 mt-2">
                                     Stock: <span class="font-semibold text-gray-800">{{ $product->stock }}</span>
-                                </p>
+                                </p> --}}
                             </div>
                         </div>
                     @endforeach
@@ -109,15 +109,19 @@
                                     <span class="text-2xl font-bold text-green-600">
                                         ${{ number_format($product->price, 2) }}
                                     </span>
-                                    <button
-                                        class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition">
-                                        <i class="fa-solid fa-cart-plus"></i> Add
-                                    </button>
+                                    <!-- Stock Status -->
+                                    <p class="text-xs mt-2 ">
+                                        <span
+                                            class="font-semibold
+                                    {{ $product->stock <= 0 ? 'text-white bg-red-500 px-3 py-2 rounded-2xl' : ($product->stock <= 5 ? 'text-white bg-yellow-600 px-3 py-2 rounded-2xl' : 'text-white bg-green-600 px-3 py-2 rounded-2xl') }}">
+                                            {{ $product->stock > 0 ? 'In Stock' : 'Out of Stock' }}
+                                        </span>
+                                    </p>
                                 </div>
 
-                                <p class="text-xs text-gray-500 mt-2">
+                                {{-- <p class="text-xs text-gray-500 mt-2">
                                     Stock: <span class="font-semibold text-gray-800">{{ $product->stock }}</span>
-                                </p>
+                                </p> --}}
                             </div>
                         </div>
                     @endforeach

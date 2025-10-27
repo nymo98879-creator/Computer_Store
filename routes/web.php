@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NetworkController;
 use Illuminate\Support\Facades\Route;
 
 // 🧭 Controllers
@@ -17,6 +18,8 @@ use App\Http\Controllers\Admin\FCategoryController;
 use App\Http\Controllers\Admin\FProductController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\DesktopController;
+use App\Http\Controllers\LaptopController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductDetailController;
 
@@ -31,17 +34,37 @@ use App\Http\Controllers\ProductDetailController;
 /* ============================
 | 🌐 FRONTEND ROUTES
 |============================= */
-
+//Home page
 Route::get('/', [HomeController::class, 'index'])->name('home');
+//Product page
 Route::get('/fproduct', [FProductController::class, 'indexfront'])->name('front.product');
-Route::get('/fcategories', [FCategoryController::class, 'indexfront'])->name('fcategory');
+Route::get('/search', [FProductController::class, 'search'])->name('product.search');
+//Category page
+// Route::get('/fcategories', [FCategoryController::class, 'indexfront'])->name('fcategory');
 Route::get('/accessories', [FAccessoriesController::class, 'indexfront'])->name('faccessories');
+//Details product
 Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('product.show');
+//Cart add
 Route::post('/product/{id}/cart', [CartController::class, 'add'])->name('product.cart');
 Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-
-
+//Order Product
 Route::post('/check_out', [OrderController::class, 'store'])->name('order.store');
+
+// desktop
+Route::get('/laptop', [LaptopController::class, 'index'])->name('flaptop');
+route::get('desktop/categories', [DesktopController::class, 'index'])->name('fdesktop');
+
+Route::get('/network', [NetworkController::class, 'index'])->name('fnetwork');
+
+// Network page
+
+Route::get('/about', function () {
+    return view('FrontEnd.about');
+})->name('about');
+
+Route::get('/contact', function () {
+    return view('FrontEnd.contact');
+})->name('contact');
 
 /* ============================
 | 🔐 AUTHENTICATION ROUTES
@@ -67,7 +90,7 @@ Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
 
     // Products (CRUD)
     Route::get('/dproduct', [DProductController::class, 'index'])->name('admin.products.index');
-    Route::get('/dproduct', [DProductController::class, 'indexpiganate'])->name('admin.products.index');
+    // Route::get('/dproduct', [DProductController::class, 'indexpiganate'])->name('admin.products.paginate');
 
     // Route::get('/dproduct', [DProductController::class, 'indexfront'])->name('front.products.index');
     Route::post('/dproduct', [DProductController::class, 'store'])->name('admin.products.store');
@@ -99,18 +122,6 @@ Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
 
 });
 
-//Test View Page
-Route::middleware(['admin.auth'])->group(function () {
-
-    // Route::get('/order', function () {
-    //     return view('admin.order');
-    // })->name('order');
-
-    Route::get('/banner', function () {
-        return view('admin.banner');
-    })->name('banner');
-});
-
 
 /* ============================
 | 👤 USER ROUTES (Protected)
@@ -118,5 +129,4 @@ Route::middleware(['admin.auth'])->group(function () {
 
 Route::middleware(['customerAuth'])->group(function () {
     Route::get('/customer/home', [AdminController::class, 'customerHome'])->name('customer.home');
-    // Route::post('/check_out', [OrderController::class, 'store'])->name('order.store');
 });

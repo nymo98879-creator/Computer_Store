@@ -1,42 +1,70 @@
 <?php
-// app/Http/Controllers/Admin/DProductController.php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class DProductController extends Controller
 {
-
+    // ===============================
+    // 🧾 List Products (Paginate)
+    // ===============================
     public function indexpiganate()
     {
         $products = Product::with('category')
             ->orderBy('id', 'asc')
-            ->paginate(5); // 5 products per page
+            ->paginate(10);
 
         $categories = Category::orderBy('name', 'asc')->get();
 
-        return view('admin.dproduct', compact('products', 'categories'));
+        // ✅ Get products with low stock (<=5)
+        $lowStockProducts = Product::where('stock', '<=', 5)->get();
+
+        // ✅ Return view with all data
+        return view('admin.dproduct', compact('products', 'categories', 'lowStockProducts'));
     }
 
-
-    public function index()
+    // ===============================
+    // 🧾 List All Products (non-paginated)
+    // ===============================
+    public function index(Request $request)
     {
-        $categories = Category::all();
-        $products = Product::with('category')->get();
-        return view('admin.dproduct', compact('products', 'categories'));
+        // ✅ Get search term or set default to null
+        $search = $request->query('search', null);
+
+        $query = Product::with('category');
+
+        // ✅ Apply search filter if provided
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        // ✅ Paginate results (10 per page)
+        $products = $query->orderBy('id', 'asc')->paginate(10);
+
+        $categories = Category::orderBy('name', 'asc')->get();
+
+        // ✅ Low stock products (optional alert)
+        $lowStockProducts = Product::where('stock', '<=', 5)->get();
+
+        // ✅ Return view with all variables
+        return view(
+            'admin.dproduct',
+            compact('products', 'categories', 'lowStockProducts', 'search')
+        );
+
     }
 
 
 
-
-    // Store new product
+    // ===============================
+    // ➕ Store New Product
+    // ===============================
     public function store(Request $request)
     {
-        // ✅ Validate inputs
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -46,10 +74,8 @@ class DProductController extends Controller
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        // ✅ Save image
         $imagePath = $request->file('image')->store('products', 'public');
 
-        // ✅ Create product
         Product::create([
             'name' => $request->name,
             'description' => $request->description,
@@ -59,16 +85,16 @@ class DProductController extends Controller
             'image' => $imagePath,
         ]);
 
-        // ✅ Redirect back
-        return redirect()->route('admin.products.index')->with('success', 'Product added successfully!');
+        return redirect()->route('admin.products.index')->with('success', '✅ Product added successfully!');
     }
-    // p
+
+    // ===============================
+    // ✏️ Update Product
+    // ===============================
     public function update(Request $request, $id)
     {
-        // ✅ Find product
         $product = Product::findOrFail($id);
 
-        // ✅ Validate inputs
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -78,33 +104,32 @@ class DProductController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        // ✅ Update image if new one uploaded
+        // ✅ Replace image if new one is uploaded
         if ($request->hasFile('image')) {
-            // Delete old image if exists
             if ($product->image && file_exists(public_path('storage/' . $product->image))) {
                 unlink(public_path('storage/' . $product->image));
             }
 
-            // Store new image
             $imagePath = $request->file('image')->store('products', 'public');
             $product->image = $imagePath;
         }
 
-        // ✅ Update product data
+        // ✅ Update product
         $product->update([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
             'stock' => $request->stock,
             'category_id' => $request->category_id,
-            'image' => $product->image, // keep old or update with new
+            'image' => $product->image,
         ]);
 
-        // ✅ Redirect back with success
-        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');
+        return redirect()->route('admin.products.index')->with('success', '✅ Product updated successfully!');
     }
 
-
+    // ===============================
+    // ❌ Delete Product
+    // ===============================
     public function destroy($id)
     {
         $product = Product::find($id);
@@ -113,8 +138,13 @@ class DProductController extends Controller
             return redirect()->back()->with('error', 'Product not found.');
         }
 
+        // ✅ Delete image file if exists
+        if ($product->image && file_exists(public_path('storage/' . $product->image))) {
+            unlink(public_path('storage/' . $product->image));
+        }
+
         $product->delete();
 
-        return redirect()->back()->with('success', 'Product deleted successfully!');
+        return redirect()->back()->with('success', '🗑 Product deleted successfully!');
     }
 }

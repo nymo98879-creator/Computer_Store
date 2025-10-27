@@ -13,11 +13,11 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 
-<body class="bg-gray-100" x-data="{}">
+<body class="bg-gray-100 " x-data="{}">
 
     {{-- Navbar --}}
     <header class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto flex justify-between items-center px-8 h-[70px]">
+        <div class=" px-10 mx-auto flex justify-between items-center h-[70px]">
             {{-- Logo --}}
             <div class="flex items-center space-x-3">
                 <i class="fa-solid fa-computer text-3xl text-blue-600"></i>
@@ -26,25 +26,84 @@
             </div>
 
             {{-- Navigation --}}
-            <nav class="hidden md:flex space-x-8">
+            <nav class="hidden md:flex flex-1 justify-center items-center space-x-8">
+
+                {{-- 🏠 Home --}}
                 <a href="{{ route('home') }}"
-                    class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Home</a>
+                    class="font-medium transition-colors duration-300
+        {{ request()->routeIs('home') ? 'text-red-600 border-b-2 border-red-600 pb-1' : 'text-gray-700 hover:text-blue-600' }}">
+                    Home
+                </a>
+
+                {{-- 🛍 Product --}}
                 <a href="{{ route('front.product') }}"
-                    class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Product</a>
-                <a href="{{ route('fcategory') }}"
-                    class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Category</a>
+                    class="font-medium transition-colors duration-300
+        {{ request()->routeIs('front.product') ? 'text-red-600 border-b-2 border-red-600 pb-1' : 'text-gray-700 hover:text-blue-600' }}">
+                    Product
+                </a>
+
+                {{-- ✅ Category Dropdown --}}
+                <select id="categorySelect"
+                    class="w-44 border border-gray-300 rounded-lg px-4 py-2 text-gray-700 bg-white font-medium
+        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all duration-300 shadow-sm hover:shadow-md">
+                    <option value="">Select Category</option>
+                    <option value="{{ route('flaptop') }}" {{ request()->routeIs('flaptop') ? 'selected' : '' }}>Laptop
+                    </option>
+                    <option value="{{ route('fdesktop') }}" {{ request()->routeIs('fdesktop') ? 'selected' : '' }}>
+                        Desktop</option>
+                    <option value="{{ route('fnetwork') }}" {{ request()->routeIs('fnetwork') ? 'selected' : '' }}>
+                        Network</option>
+                </select>
+
+                <script>
+                    document.getElementById('categorySelect').addEventListener('change', function() {
+                        if (this.value) {
+                            window.location.href = this.value;
+                        }
+                    });
+                </script>
+
+                {{-- 🎧 Accessories --}}
                 <a href="{{ route('faccessories') }}"
-                    class="text-lg font-medium text-gray-700 hover:text-blue-600 transition">Accessories</a>
+                    class="font-medium transition-colors duration-300
+        {{ request()->routeIs('faccessories') ? 'text-red-600 border-b-2 border-red-600 pb-1' : 'text-gray-700 hover:text-blue-600' }}">
+                    Accessories
+                </a>
+
+                {{-- 🧭 About Us --}}
+                <a href="{{ route('about') }}"
+                    class="font-medium transition-colors duration-300
+        {{ request()->routeIs('about') ? 'text-red-600 border-b-2 border-red-600 pb-1' : 'text-gray-700 hover:text-blue-600' }}">
+                    About Us
+                </a>
+
+                {{-- ☎ Contact --}}
+                <a href="{{ route('contact') }}"
+                    class="font-medium transition-colors duration-300
+        {{ request()->routeIs('contact') ? 'text-red-600 border-b-2 border-red-600 pb-1' : 'text-gray-700 hover:text-blue-600' }}">
+                    Contact
+                </a>
             </nav>
+
 
             {{-- Right Icons --}}
             <div class="flex items-center space-x-6">
                 {{-- Search --}}
-                <div class="relative hidden md:block">
-                    <input type="text" placeholder="Search..."
-                        class="border rounded-full pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-500"></i>
+
+                <div class="relative ">
+                    <form action="{{ route('product.search') }}" method="GET"
+                        class="flex items-center bg-white border border-gray-300 rounded-full overflow-hidden shadow-sm w-60 max-w-sm">
+                        <input type="text" name="search" placeholder="Search product..."
+                            value="{{ request('search') }}"
+                            class="flex-grow px-4 py-2 text-sm text-gray-700 focus:outline-none">
+                        <button type="submit"
+                            class="px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 transition">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
                 </div>
+
+
 
                 {{-- Cart --}}
                 <div x-data="{ openCart: false }" class="relative">
@@ -161,8 +220,8 @@
         <div class="mb-5">
             <label class="block text-gray-700 font-semibold mb-2">Email</label>
             <input type="email" name="email"
-                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500" value="{{ old('email') }}"
-                required>
+                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                value="{{ old('email') }}" required>
         </div>
 
         <div class="mb-6">
@@ -184,34 +243,73 @@
     {{-- REGISTER FORM --}}
     <form action="{{ url('/register') }}" method="POST" id="registerForm"
         class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-        bg-white shadow-2xl rounded-3xl w-[400px] p-8 z-50 border border-gray-200">
+    bg-white shadow-2xl rounded-3xl w-[450px] p-8 z-50 border border-gray-200">
         @csrf
-        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Register</h2>
+
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Create an Account</h2>
+
+        <!-- Name -->
         <div class="mb-4">
-            <label class="block text-gray-700 font-semibold mb-2">Name</label>
+            <label class="block text-gray-700 font-semibold mb-2">Full Name</label>
             <input type="text" name="name"
-                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500" required>
+                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                placeholder="Enter your full name" required>
         </div>
+
+        <!-- Email -->
         <div class="mb-4">
-            <label class="block text-gray-700 font-semibold mb-2">Email</label>
+            <label class="block text-gray-700 font-semibold mb-2">Email Address</label>
             <input type="email" name="email"
-                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500" required>
+                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                placeholder="example@email.com" required>
         </div>
+
+        <!-- Phone -->
         <div class="mb-4">
-            <label class="block text-gray-700 font-semibold mb-2">Password</label>
-            <input type="password" name="password"
-                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500" required>
+            <label class="block text-gray-700 font-semibold mb-2">Phone Number</label>
+            <input type="text" name="phone"
+                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                placeholder="+855 12 345 678" required>
         </div>
-        <div class="mb-6">
-            <label class="block text-gray-700 font-semibold mb-2">Confirm Password</label>
-            <input type="password" name="password_confirmation"
-                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500" required>
+
+        <!-- Address -->
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">Address</label>
+            <textarea name="address" rows="2"
+                class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none resize-none"
+                placeholder="Enter your address" required></textarea>
         </div>
+
+        <!-- Password -->
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">Password</label>
+                <input type="password" name="password"
+                    class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                    placeholder="********" required>
+            </div>
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">Confirm</label>
+                <input type="password" name="password_confirmation"
+                    class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                    placeholder="********" required>
+            </div>
+        </div>
+
+        <!-- Button -->
         <button type="submit"
-            class="w-full bg-green-600 text-white font-semibold py-2 rounded-xl hover:bg-green-700 transition duration-200">Register</button>
-        <p class="text-sm text-center mt-4">Already have an account? <a href="#" id="openLogin"
-                class="text-blue-500 hover:underline">Login</a></p>
+            class="w-full bg-green-600 text-white font-semibold py-2 rounded-xl hover:bg-green-700 transition duration-200 shadow-md">
+            Register
+        </button>
+
+        <p class="text-sm text-center mt-4 text-gray-600">
+            Already have an account?
+            <a href="#" id="openLogin" class="text-green-600 font-semibold hover:underline">Login</a>
+        </p>
     </form>
+
+
+
 
     {{-- JS --}}
     <script>
@@ -267,7 +365,7 @@
                     <li><a href="{{ route('home') }}" class="hover:text-blue-400 transition">Home</a></li>
                     <li><a href="{{ route('front.product') }}" class="hover:text-blue-400 transition">Products</a>
                     </li>
-                    <li><a href="{{ route('fcategory') }}" class="hover:text-blue-400 transition">Categories</a></li>
+                    {{-- <li><a href="{{ route('flaptop') }}" class="hover:text-blue-400 transition">Categories</a></li> --}}
                     <li><a href="{{ route('faccessories') }}" class="hover:text-blue-400 transition">Accessories</a>
                     </li>
                 </ul>
@@ -275,10 +373,14 @@
             <div>
                 <h3 class="text-xl font-semibold text-white mb-3">Follow Us</h3>
                 <div class="flex space-x-5 text-2xl">
-                    <a href="#" class="hover:text-blue-500"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#" class="hover:text-pink-500"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" class="hover:text-sky-400"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="#" class="hover:text-red-500"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="https://web.facebook.com/" target="_blank" class="hover:text-blue-500"><i
+                            class="fa-brands fa-facebook"></i></a>
+                    <a href="https://web.facebook.com/" target="_blank" class="hover:text-pink-500"><i
+                            class="fa-brands fa-instagram"></i></a>
+                    <a href="https://web.facebook.com/" target="_blank" class="hover:text-sky-400"><i
+                            class="fa-brands fa-twitter"></i></a>
+                    <a href="https://web.facebook.com/" target="_blank" class="hover:text-red-500"><i
+                            class="fa-brands fa-youtube"></i></a>
                 </div>
                 <p class="text-gray-400 text-sm mt-6">© 2025 KM Store. All rights reserved.</p>
             </div>

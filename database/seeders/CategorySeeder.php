@@ -16,10 +16,8 @@ class CategorySeeder extends Seeder
         Category::insert([
             ['name' => 'Laptop'],
             ['name' => 'Desktop'],
-            ['name' => 'Monitor'],
-            ['name' => 'Keyboard'],
-            ['name' => 'Mouse'],
-            ['name' => 'Headphones'],
+            ['name' => 'Accessories'],
+
         ]);
 
     }

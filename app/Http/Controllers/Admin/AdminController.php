@@ -23,27 +23,55 @@ class AdminController extends Controller
     // =========================
     public function register(Request $request)
     {
-        // Validate input
+        // ✅ Validate input
         $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:customers,email',
-            'password' => 'required|min:8|confirmed',
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|email|unique:customers,email',
+            'phone'     => 'required|string|max:20',
+            'address'   => 'required|string|max:255',
+            'password'  => 'required|min:8|confirmed',
         ]);
 
-        // Create customer
+        // ✅ Create customer
         $user = Customer::create([
             'name'     => $request->name,
             'email'    => $request->email,
+            'phone'    => $request->phone,
+            'address'  => $request->address,
             'password' => Hash::make($request->password),
         ]);
 
-        // Auto-login customer after registration
+        // ✅ Auto-login customer after registration
         $request->session()->put('user_logged_in', true);
         $request->session()->put('user_name', $user->name);
         $request->session()->put('user_id', $user->id);
 
         return redirect('/')->with('success', 'Registered and logged in successfully!');
     }
+
+    // public function register(Request $request)
+    // {
+    //     // Validate input
+    //     $request->validate([
+    //         'name'     => 'required|string|max:255',
+    //         'email'    => 'required|email|unique:customers,email',
+    //         'password' => 'required|min:8|confirmed',
+    //     ]);
+
+    //     // Create customer
+    //     $user = Customer::create([
+    //         'name'     => $request->name,
+    //         'email'    => $request->email,
+    //         'password' => Hash::make($request->password),
+    //     ]);
+
+    //     // Auto-login customer after registration
+    //     $request->session()->put('user_logged_in', true);
+    //     $request->session()->put('user_name', $user->name);
+    //     $request->session()->put('user_id', $user->id);
+
+    //     return redirect('/')->with('success', 'Registered and logged in successfully!');
+    // }
 
     // =========================
     // 🔑 Login (Admin + Customer)
@@ -77,7 +105,7 @@ class AdminController extends Controller
     }
 
     // =========================
-    // 🚪 Logout
+    // 🚪 Admin Logout
     // =========================
     public function logout(Request $request)
     {

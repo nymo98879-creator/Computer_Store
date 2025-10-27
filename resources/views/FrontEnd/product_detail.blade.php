@@ -7,7 +7,7 @@
         <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
             <div class="flex flex-col md:flex-row">
 
-                {{-- 🖼️ Product Image --}}
+                <!-- Product Image -->
                 <div class="md:w-1/2 relative">
                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                         class="w-full h-full object-cover md:rounded-l-2xl">
@@ -20,94 +20,114 @@
                     @endif
                 </div>
 
-                {{-- 📄 Product Details --}}
+                <!-- Product Details -->
                 <div class="md:w-1/2 p-8 flex flex-col justify-between">
                     <div class="space-y-4">
                         <h1 class="text-4xl font-extrabold text-gray-800">{{ $product->name }}</h1>
-
-                        <p class="text-gray-600 leading-relaxed text-justify">
+                        <p class="text-gray-600 leading-relaxed text-justify whitespace-pre-line">
                             {{ $product->description }}
                         </p>
 
                         <div class="mt-4">
-                            <span class="text-3xl font-bold text-green-600">${{ number_format($product->price, 2) }}</span>
+                            <span class="text-3xl font-bold text-green-600">
+                                ${{ number_format($product->price, 2) }}
+                            </span>
                         </div>
 
                         <div class="text-gray-600 text-sm space-y-1">
-                            <p><span class="font-semibold text-gray-800">Stock:</span> {{ $product->stock }}</p>
+
                             <p><span class="font-semibold text-gray-800">Category:</span>
                                 {{ $product->category->name ?? 'No Category' }}</p>
                         </div>
                     </div>
 
-                    {{-- 🛒 Add to Cart + Checkout --}}
-                    <div class="mt-8 flex flex-col sm:flex-row items-center gap-4">
-                        {{-- Quantity --}}
-                        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                            <button type="button" id="decrease"
-                                class="px-4 py-2 text-gray-600 hover:bg-gray-100 text-lg">−</button>
-                            <input type="number" id="quantity" name="quantity" min="1" value="1"
-                                class="w-16 text-center border-l border-r border-gray-300 focus:outline-none">
-                            <button type="button" id="increase"
-                                class="px-4 py-2 text-gray-600 hover:bg-gray-100 text-lg">+</button>
+                    <!-- Add to Cart -->
+                    @if ($product->stock > 0)
+                        <div class="mt-8 flex flex-col sm:flex-row items-center gap-4">
+                            <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                                <button type="button" id="decrease"
+                                    class="px-4 py-2 text-gray-600 hover:bg-gray-100 text-lg">−</button>
+                                <input type="number" id="quantity" name="quantity" min="1" value="1"
+                                    class="w-16 text-center border-l border-r border-gray-300 focus:outline-none">
+                                <button type="button" id="increase"
+                                    class="px-4 py-2 text-gray-600 hover:bg-gray-100 text-lg">+</button>
+                            </div>
+
+                            <form id="addToCartForm" action="{{ route('product.cart', $product->id) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="quantity" id="hiddenQuantity" value="1">
+                                <button type="submit"
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition">
+                                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                                </button>
+                            </form>
                         </div>
+                    @else
+                        <div class="mt-8">
+                            <span class="text-red-600 font-semibold text-lg">Out of Stock</span>
+                        </div>
+                    @endif
 
+                    <!-- Back -->
+                    @php
+                        $backRoute = match (request()->query('from')) {
+                            'home' => route('home'),
+                            'laptop' => route('flaptop'),
+                            'desktop' => route('fdesktop'),
+                            'network' => route('fnetwork'),
+                            'accessories' => route('faccessories'),
+                            default => route('front.product'),
+                        };
+                    @endphp
 
-                        {{-- 🛍️ Add to Cart Button --}}
-                        <form id="addToCartForm" action="{{ route('product.cart', $product->id) }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="quantity" id="hiddenQuantity" value="1">
-                            <button type="submit"
-                                class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition">
-                                <i class="fa-solid fa-cart-plus"></i> Add to Cart
-                            </button>
-                        </form>
+                    <!-- Back Button -->
+                    <div class="mt-10">
+                        <a href="{{ $backRoute }}"
+                            class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold text-sm transition">
+                            <i class="fa-solid fa-arrow-left mr-2"></i> Back
+                        </a>
                     </div>
 
-                    {{-- 🔙 Back to Products --}}
-                    <div class="mt-10">
+                    {{-- <div class="mt-10">
                         <a href="{{ route('front.product') }}"
                             class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold text-sm transition">
                             <i class="fa-solid fa-arrow-left mr-2"></i> Back to Products
                         </a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- 📝 Quantity JS --}}
     <script>
         const decreaseBtn = document.getElementById('decrease');
         const increaseBtn = document.getElementById('increase');
         const quantityInput = document.getElementById('quantity');
         const hiddenQuantity = document.getElementById('hiddenQuantity');
-        const modalQuantity = document.getElementById('modalQuantity');
-        const checkoutQuantity = document.getElementById('checkoutQuantity');
 
-        function updateQuantities(value) {
+        function updateQuantity(value) {
             quantityInput.value = value;
             hiddenQuantity.value = value;
-            modalQuantity.textContent = value;
-            checkoutQuantity.value = value;
         }
 
-        decreaseBtn.addEventListener('click', () => {
-            let value = parseInt(quantityInput.value);
-            if (value > 1) value--;
-            updateQuantities(value);
-        });
+        if (decreaseBtn && increaseBtn) {
+            decreaseBtn.addEventListener('click', () => {
+                let value = parseInt(quantityInput.value);
+                if (value > 1) value--;
+                updateQuantity(value);
+            });
 
-        increaseBtn.addEventListener('click', () => {
-            let value = parseInt(quantityInput.value);
-            value++;
-            updateQuantities(value);
-        });
+            increaseBtn.addEventListener('click', () => {
+                let value = parseInt(quantityInput.value);
+                value++;
+                updateQuantity(value);
+            });
 
-        quantityInput.addEventListener('input', () => {
-            let value = parseInt(quantityInput.value);
-            if (isNaN(value) || value < 1) value = 1;
-            updateQuantities(value);
-        });
+            quantityInput.addEventListener('input', () => {
+                let value = parseInt(quantityInput.value);
+                if (isNaN(value) || value < 1) value = 1;
+                updateQuantity(value);
+            });
+        }
     </script>
 @endsection
