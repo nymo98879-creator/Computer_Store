@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/OrderController.php
 
 namespace App\Http\Controllers;
 
@@ -19,7 +18,7 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        // ✅ Check login
+        // ✅ Require login
         if (!$request->session()->has('user_logged_in')) {
             return redirect('/')->with('error', 'Please login first to place an order.');
         }
@@ -31,7 +30,7 @@ class OrderController extends Controller
             return back()->with('error', 'Your cart is empty!');
         }
 
-        // ✅ Check stock for each product before ordering
+        // ✅ Validate product stock before creating order
         foreach ($cart as $productId => $item) {
             $product = Product::find($productId);
 
@@ -39,22 +38,33 @@ class OrderController extends Controller
                 return back()->with('error', 'One of the products does not exist.');
             }
 
+            if ($product->stock <= 0) {
+                return back()->with('error', "{$product->name} is out of stock.");
+            }
+
             if ($product->stock < $item['quantity']) {
                 return back()->with('error', "Not enough stock for {$product->name}. Only {$product->stock} left.");
             }
         }
 
-        // ✅ Create order
+        // ✅ Calculate total price
         $totalPrice = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+
+        // ✅ Create new order
         $order = Order::create([
             'customer_id' => $customerId,
             'total_price' => $totalPrice,
             'status'      => 'Pending',
         ]);
 
-        // ✅ Create order items and decrease stock
+        // ✅ Save order items & decrease stock
         foreach ($cart as $productId => $item) {
             $product = Product::find($productId);
+
+            // Double-check stock again (for concurrency safety)
+            if ($product->stock < $item['quantity']) {
+                return back()->with('error', "Sorry, stock changed for {$product->name}. Try again.");
+            }
 
             // Create order item
             OrderItem::create([
@@ -64,11 +74,11 @@ class OrderController extends Controller
                 'price'      => $item['price'],
             ]);
 
-            // 🔻 Decrease product stock safely
+            // 🔻 Reduce stock safely
             $product->decrement('stock', $item['quantity']);
         }
 
-        // ✅ Clear cart after ordering
+        // ✅ Clear cart after order success
         session()->forget('cart');
 
         return redirect()->back()->with('order_success', 'Your order has been placed successfully!');

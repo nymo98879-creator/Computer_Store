@@ -34,6 +34,7 @@ use App\Http\Controllers\ProductDetailController;
 /* ============================
 | 🌐 FRONTEND ROUTES
 |============================= */
+
 //Home page
 Route::get('/', [HomeController::class, 'index'])->name('home');
 //Product page
@@ -55,6 +56,9 @@ Route::get('/laptop', [LaptopController::class, 'index'])->name('flaptop');
 route::get('desktop/categories', [DesktopController::class, 'index'])->name('fdesktop');
 
 Route::get('/network', [NetworkController::class, 'index'])->name('fnetwork');
+
+Route::get('/product/{id}', [DProductController::class, 'show'])
+    ->name('product.show');
 
 // Network page
 
@@ -118,8 +122,6 @@ Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
 
     //Order
     Route::get('/order_count', [OrderController::class, 'index'])->name('order.count');
-
-
 });
 
 

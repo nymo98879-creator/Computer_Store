@@ -50,12 +50,13 @@
             <h2 class="text-3xl font-bold text-gray-800 mb-10">Meet Our Team</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8 px-52">
                 <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition">
-                    <img src="/images/team1.jpg" alt="Team Member" class="w-32 h-32 mx-auto rounded-full bg-blue-500 mb-4">
+
+                    <img src="{{ asset('image/image.png') }}"  alt="Team Member" class="w-32 h-32 mx-auto  object-cover rounded-full bg-blue-500 mb-4">
                     <h3 class="text-xl font-semibold text-gray-800 mb-1">MO NY</h3>
                     <p class="text-gray-500">CEO / Founder</p>
                 </div>
                 <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition">
-                    <img src="/images/team2.jpg" alt="Team Member" class="w-32 h-32 mx-auto rounded-full bg-red-500 mb-4 flex justify-center items-center">
+                    <img src="" alt="Team Member" class="w-32 h-32 mx-auto rounded-full bg-red-500 mb-4 flex justify-center items-center">
                     <h3 class="text-xl font-semibold text-gray-800 mb-1">Choekhim</h3>
                     <p class="text-gray-500">Marketing Manager</p>
                 </div>

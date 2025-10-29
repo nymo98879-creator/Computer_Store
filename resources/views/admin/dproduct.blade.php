@@ -10,10 +10,10 @@
     }">
 
         <!-- Header -->
-        <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center justify-between mb-6 ">
             <h1 class="text-3xl font-bold text-gray-800">Product</h1>
             <button @click="showForm = true"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition">
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition fixed ml-[69.50%]">
                 + Add Product
             </button>
         </div>
@@ -25,7 +25,7 @@
             </div>
         @endif --}}
 
-        <form method="GET" action="{{ route('admin.products.index') }}" class="mb-4 flex justify-end">
+        <form method="GET" action="{{ route('admin.products.index') }}" class="mb-4  flex justify-end fixed ml-[59%]">
             <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search by product name..."
                 class="border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
             <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-lg">
@@ -82,7 +82,7 @@
         @endif --}}
 
         <!-- ✅ Product Table -->
-        <div class="bg-white rounded-2xl shadow overflow-hidden">
+        <div class="bg-white rounded-2xl shadow overflow-hidden mt-20">
             <table class="min-w-full border-collapse">
                 <thead class="bg-gray-200 text-gray-700 uppercase text-sm">
                     <tr>
@@ -242,8 +242,28 @@
                         </select>
                     </div>
 
+
+                    <!-- 🖼️ Multiple Image Upload with Preview -->
+                    <div x-data="{ imagePreviews: [] }">
+                        <label class="block text-gray-600 mb-1">Product Images</label>
+                        <input type="file" name="images[]" accept="image/*" multiple
+                            @change="
+                                    imagePreviews = [];
+                                    for (const file of $event.target.files) {
+                                        imagePreviews.push(URL.createObjectURL(file));
+                                    }
+                                "
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none" required>
+
+                        <!-- 🟢 Image Preview -->
+                        <div class="mt-3 flex gap-2 flex-wrap">
+                            <template x-for="(src, index) in imagePreviews" :key="index">
+                                <img :src="src" class="w-20 h-20 rounded-lg object-cover border">
+                            </template>
+                        </div>
+                    </div>
                     <!-- Image Upload with Preview -->
-                    <div>
+                    {{-- <div>
                         <label class="block text-gray-600 mb-1">Product Image</label>
                         <input type="file" name="image" accept="image/*"
                             @change="const file = $event.target.files[0];
@@ -254,7 +274,7 @@
                             <img :src="imagePreview" alt="Preview"
                                 class="mt-3 w-28 h-28 rounded-lg object-cover border">
                         </template>
-                    </div>
+                    </div> --}}
 
                     <!-- Buttons -->
                     <div class="flex justify-end gap-3 mt-4">

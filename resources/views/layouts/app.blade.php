@@ -16,117 +16,131 @@
 <body class="bg-gray-100 " x-data="{}">
 
     {{-- Navbar --}}
-    <header class="bg-white shadow-lg sticky top-0 z-50">
-        <div class=" px-10 mx-auto flex justify-between items-center h-[70px]">
-            {{-- Logo --}}
+    <header class="bg-white shadow-lg sticky top-0 z-50" x-data="{ openCart: false, openNav: false }">
+        <div class="container mx-auto px-6 md:px-10 flex items-center justify-between h-[70px]">
+
+            <!-- Logo -->
             <div class="flex items-center space-x-3">
                 <i class="fa-solid fa-computer text-3xl text-blue-600"></i>
-                <h1 class="text-xl lg:text-3xl font-extrabold text-gray-800">KM <span class="text-blue-600">STORE</span>
+                <h1 class="text-xl lg:text-3xl font-extrabold text-gray-800">
+                    KM <span class="text-blue-600">STORE</span>
                 </h1>
             </div>
 
-            {{-- Navigation --}}
-            <nav class="hidden md:flex flex-1 justify-center items-center space-x-8">
+            <!-- Search + Filter -->
+            <div class="hidden md:flex flex-1 items-center justify-center space-x-4 max-w-2xl">
+                {{-- <form action="{{ route('product.search') }}" method="GET"
+                    class="flex flex-1 items-center bg-gray-50 border border-gray-300 rounded-full shadow-sm overflow-hidden p-1 space-x-2">
+                    <input type="text" name="search" placeholder="Search product..." value="{{ request('search') }}"
+                        class="flex-grow px-4 py-2 text-gray-700 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
 
-                {{-- 🏠 Home --}}
-                <a href="{{ route('home') }}"
-                    class="font-medium transition-colors duration-300
-        {{ request()->routeIs('home') ? 'text-red-600 border-b-2 border-red-600 pb-1' : 'text-gray-700 hover:text-blue-600' }}">
-                    Home
-                </a>
+                    <input type="number" name="min_price" placeholder="Min $" value="{{ request('min_price') }}"
+                        class="w-20 px-3 py-2 text-gray-700 text-sm rounded-full border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
 
-                {{-- 🛍 Product --}}
-                <a href="{{ route('front.product') }}"
-                    class="font-medium transition-colors duration-300
-        {{ request()->routeIs('front.product') ? 'text-red-600 border-b-2 border-red-600 pb-1' : 'text-gray-700 hover:text-blue-600' }}">
-                    Product
-                </a>
+                    <span class="text-gray-500">to</span>
 
-                {{-- ✅ Category Dropdown --}}
-                <select id="categorySelect"
-                    class="w-44 border border-gray-300 rounded-lg px-4 py-2 text-gray-700 bg-white font-medium
-        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all duration-300 shadow-sm hover:shadow-md">
-                    <option value="">Select Category</option>
-                    <option value="{{ route('flaptop') }}" {{ request()->routeIs('flaptop') ? 'selected' : '' }}>Laptop
-                    </option>
-                    <option value="{{ route('fdesktop') }}" {{ request()->routeIs('fdesktop') ? 'selected' : '' }}>
-                        Desktop</option>
-                    <option value="{{ route('fnetwork') }}" {{ request()->routeIs('fnetwork') ? 'selected' : '' }}>
-                        Network</option>
-                </select>
+                    <input type="number" name="max_price" placeholder="Max $" value="{{ request('max_price') }}"
+                        class="w-20 px-3 py-2 text-gray-700 text-sm rounded-full border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
 
-                <script>
-                    document.getElementById('categorySelect').addEventListener('change', function() {
-                        if (this.value) {
-                            window.location.href = this.value;
-                        }
-                    });
-                </script>
+                    <button type="submit"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-full shadow-md hover:bg-indigo-700 transition">
+                        Filter
+                    </button>
+                </form> --}}
+                <form action="{{ route('product.search') }}" method="GET"
+                    class="flex flex-1 items-center bg-gray-50 border border-gray-300 rounded-full shadow-sm overflow-hidden p-1 space-x-2">
 
-                {{-- 🎧 Accessories --}}
-                <a href="{{ route('faccessories') }}"
-                    class="font-medium transition-colors duration-300
-        {{ request()->routeIs('faccessories') ? 'text-red-600 border-b-2 border-red-600 pb-1' : 'text-gray-700 hover:text-blue-600' }}">
-                    Accessories
-                </a>
+                    <input type="text" name="search" placeholder="Search product..." value="{{ request('search') }}"
+                        class="flex-grow px-4 py-2 text-gray-700 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
 
-                {{-- 🧭 About Us --}}
-                <a href="{{ route('about') }}"
-                    class="font-medium transition-colors duration-300
-        {{ request()->routeIs('about') ? 'text-red-600 border-b-2 border-red-600 pb-1' : 'text-gray-700 hover:text-blue-600' }}">
-                    About Us
-                </a>
+                    <select name="category"
+                        class="px-3 py-2 text-gray-700 text-sm rounded-full border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
+                        <option value="">All Categories</option>
+                        <option value="laptop" {{ request('category') == 'laptop' ? 'selected' : '' }}>Laptop</option>
+                        <option value="desktop" {{ request('category') == 'desktop' ? 'selected' : '' }}>Desktop
+                        </option>
+                        <option value="network" {{ request('category') == 'network' ? 'selected' : '' }}>Network
+                        </option>
+                        <option value="accessories" {{ request('category') == 'accessories' ? 'selected' : '' }}>
+                            Accessories</option>
+                    </select>
 
-                {{-- ☎ Contact --}}
-                <a href="{{ route('contact') }}"
-                    class="font-medium transition-colors duration-300
-        {{ request()->routeIs('contact') ? 'text-red-600 border-b-2 border-red-600 pb-1' : 'text-gray-700 hover:text-blue-600' }}">
-                    Contact
-                </a>
-            </nav>
+                    <input type="number" name="min_price" placeholder="Min $" value="{{ request('min_price') }}"
+                        class="w-20 px-3 py-2 text-gray-700 text-sm rounded-full border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
 
+                    <span class="text-gray-500">to</span>
 
-            {{-- Right Icons --}}
-            <div class="flex items-center space-x-6">
-                {{-- Search --}}
+                    <input type="number" name="max_price" placeholder="Max $" value="{{ request('max_price') }}"
+                        class="w-20 px-3 py-2 text-gray-700 text-sm rounded-full border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
 
-                <div class="relative ">
-                    <form action="{{ route('product.search') }}" method="GET"
-                        class="flex items-center bg-white border border-gray-300 rounded-full overflow-hidden shadow-sm w-60 max-w-sm">
-                        <input type="text" name="search" placeholder="Search product..."
-                            value="{{ request('search') }}"
-                            class="flex-grow px-4 py-2 text-sm text-gray-700 focus:outline-none">
-                        <button type="submit"
-                            class="px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 transition">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                    </form>
+                    <button type="submit"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-full shadow-md hover:bg-indigo-700 transition">
+                        Filter
+                    </button>
+                </form>
+
+            </div>
+
+            <!-- Right Icons -->
+            <div class="flex items-center space-x-4">
+
+                <!-- Dropdown Navigation -->
+                <div class="relative mr-10">
+                    <button @click="openNav = !openNav"
+                        class="flex items-center text-gray-700 hover:text-blue-600 font-medium focus:outline-none">
+                        Menu <i class="fa-solid fa-chevron-down ml-1"></i>
+                    </button>
+
+                    <div x-show="openNav" x-transition
+                        class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-xl border border-gray-200 py-2 z-50">
+                        <a href="{{ route('home') }}"
+                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Home</a>
+                        <a href="{{ route('front.product') }}"
+                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Products</a>
+                        <a href="{{ route('flaptop') }}"
+                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Laptop</a>
+                        <a href="{{ route('fdesktop') }}"
+                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Desktop</a>
+                        <a href="{{ route('fnetwork') }}"
+                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Network</a>
+                        <a href="{{ route('faccessories') }}"
+                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Accessories</a>
+                        <a href="{{ route('about') }}"
+                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">About
+                            Us</a>
+                        <a href="{{ route('contact') }}"
+                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Contact</a>
+                    </div>
                 </div>
 
 
-
-                {{-- Cart --}}
-                <div x-data="{ openCart: false }" class="relative">
+                <!-- 🛒 Cart -->
+                <div class="relative" x-data="{ openCart: false }">
                     <i class="fa-solid fa-cart-shopping text-xl text-gray-700 hover:text-blue-600 cursor-pointer"
                         @click="openCart = true"></i>
 
                     @php $cart = session('cart', []); @endphp
                     @if (count($cart) > 0)
                         <span
-                            class="absolute -top-4 right-[-50%] bg-red-500 text-white text-xs rounded-full px-1">{{ count($cart) }}</span>
+                            class="absolute -top-4 -right-2 bg-red-500 text-white text-xs rounded-full px-1">{{ count($cart) }}</span>
                     @endif
 
-                    {{-- Sidebar Cart --}}
-                    <div x-show="openCart" x-transition
-                        class="fixed top-0 right-0 w-[500px] h-full bg-white shadow-2xl z-50 p-6 overflow-y-auto rounded-l-2xl border-l border-gray-200"
-                        @click.outside="openCart = false">
+                    <!-- Sidebar Cart: Slide from Right -->
+                    <div x-show="openCart" @click.outside="openCart = false"
+                        x-transition:enter="transition-transform duration-300"
+                        x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+                        x-transition:leave="transition-transform duration-300" x-transition:leave-start="translate-x-0"
+                        x-transition:leave-end="translate-x-full"
+                        class="fixed top-0 right-0 w-[400px] md:w-[500px] h-full bg-white shadow-2xl z-50 p-6 overflow-y-auto rounded-l-2xl border-l border-gray-200">
 
+                        <!-- Header -->
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-2xl font-bold text-gray-800">🛒 Your Cart</h2>
                             <button @click="openCart = false"
                                 class="text-gray-400 hover:text-gray-600 text-lg transition">✕</button>
                         </div>
 
+                        <!-- Cart Items -->
                         @if (count($cart) > 0)
                             <ul class="divide-y divide-gray-100">
                                 @foreach ($cart as $id => $item)
@@ -155,9 +169,8 @@
                                 @endforeach
                             </ul>
 
-                            {{-- Checkout / Login --}}
+                            <!-- Checkout -->
                             <div class="mt-8 border-t border-gray-200 pt-4">
-
                                 @if (session()->has('user_logged_in'))
                                     <form action="{{ route('order.store') }}" method="POST">
                                         @csrf
@@ -168,11 +181,7 @@
                                     </form>
                                 @else
                                     <button type="button"
-                                        @click.stop="
-                                            loginForm.classList.remove('hidden');
-                                            registerForm.classList.add('hidden');
-                                            openCart = false;
-                                        "
+                                        @click.stop="loginForm.classList.remove('hidden'); registerForm.classList.add('hidden'); openCart = false;"
                                         class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition">
                                         Login to Checkout
                                     </button>
@@ -188,15 +197,97 @@
                     </div>
                 </div>
 
-                {{-- User Icon / Logout --}}
-                <div class="flex items-center space-x-4">
+                {{-- <div class="relative mr-10">
+                <i class="fa-solid fa-cart-shopping text-xl text-gray-700 hover:text-blue-600 cursor-pointer"
+                    @click="openCart = true"></i>
+
+                @php $cart = session('cart', []); @endphp
+                @if (count($cart) > 0)
+                    <span class="absolute -top-4 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
+                        {{ count($cart) }}
+                    </span>
+                @endif
+
+                <!-- 🧾 Cart Sidebar -->
+                <div x-show="openCart" x-transition
+                    class="fixed top-0 right-0 w-[400px] md:w-[500px] h-full bg-white shadow-2xl z-50 p-6 overflow-y-auto rounded-l-2xl border-l border-gray-200"
+                    @click.outside="openCart = false">
+
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">🛒 Your Cart</h2>
+                        <button @click="openCart = false"
+                            class="text-gray-400 hover:text-gray-600 text-lg transition">✕</button>
+                    </div>
+
+                    <!-- Cart Content -->
+                    @if (count($cart) > 0)
+                        <ul class="divide-y divide-gray-100">
+                            @foreach ($cart as $id => $item)
+                                <li class="py-4 flex items-center justify-between hover:bg-gray-50 rounded-xl px-2 transition">
+                                    <div class="flex items-center space-x-4">
+                                        <img src="{{ asset('storage/' . $item['image']) }}" alt="{{ $item['name'] }}"
+                                            class="w-14 h-14 rounded-xl object-cover shadow-sm border border-gray-100">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">{{ $item['name'] }}</p>
+                                            <p class="text-sm text-gray-500">Qty: {{ $item['quantity'] }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-green-600 font-semibold">
+                                            ${{ number_format($item['price'] * $item['quantity'], 2) }}
+                                        </p>
+                                        <form action="{{ route('cart.remove', $id) }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="keep_cart_open" value="1">
+                                            <button type="submit"
+                                                class="text-xs text-red-500 hover:text-red-700 font-medium transition">
+                                                Remove
+                                            </button>
+                                        </form>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+
+                        <!-- Checkout Section -->
+                        <div class="mt-8 border-t border-gray-200 pt-4">
+                            @if (session()->has('user_logged_in'))
+                                <form action="{{ route('order.store') }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition">
+                                        Proceed to Checkout
+                                    </button>
+                                </form>
+                            @else
+                                <button type="button"
+                                    @click.stop="loginForm.classList.remove('hidden'); registerForm.classList.add('hidden'); openCart = false;"
+                                    class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition">
+                                    Login to Checkout
+                                </button>
+                            @endif
+                        </div>
+                    @else
+                        <!-- Empty Cart -->
+                        <div class="text-center mt-20">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png"
+                                class="w-24 mx-auto mb-4 opacity-70" alt="Empty Cart">
+                            <p class="text-gray-500 text-lg">Your cart is empty 🛍️</p>
+                        </div>
+                    @endif
+                </div>
+            </div> --}}
+
+                <!-- 👤 User -->
+                <div>
                     @if (!session()->has('user_logged_in'))
                         <i id="user"
                             class="fa-solid fa-user text-xl text-gray-700 hover:text-blue-600 cursor-pointer"></i>
                     @else
                         <span class="text-gray-700 font-medium">{{ session('user_name') }}</span>
                         <a href="{{ route('customer.logout') }}"
-                            class="text-gray-700 hover:text-red-500 transition cursor-pointer" title="Logout">
+                            class="text-gray-700 hover:text-red-500 transition ml-2" title="Logout">
                             <i class="fa-solid fa-right-from-bracket text-xl"></i>
                         </a>
                     @endif
@@ -204,6 +295,7 @@
             </div>
         </div>
     </header>
+
 
     {{-- LOGIN FORM --}}
 
