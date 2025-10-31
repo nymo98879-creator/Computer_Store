@@ -56,20 +56,11 @@
                     <p class="text-gray-500">CEO / Founder</p>
                 </div>
                 <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition">
-                    <img src="" alt="Team Member" class="w-32 h-32 mx-auto rounded-full bg-red-500 mb-4 flex justify-center items-center">
+                    <img src="image/image1.png" alt="Team Member" class="w-32 h-32 mx-auto rounded-full bg-red-500 mb-4 flex justify-center items-center">
                     <h3 class="text-xl font-semibold text-gray-800 mb-1">Choekhim</h3>
                     <p class="text-gray-500">Marketing Manager</p>
                 </div>
-                {{-- <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition">
-                    <img src="/images/team3.jpg" alt="Team Member" class="w-32 h-32 mx-auto rounded-full mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-1">Mike Johnson</h3>
-                    <p class="text-gray-500">Tech Support</p>
-                </div>
-                <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition">
-                    <img src="/images/team4.jpg" alt="Team Member" class="w-32 h-32 mx-auto rounded-full mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-1">Sara Lee</h3>
-                    <p class="text-gray-500">Sales Executive</p>
-                </div> --}}
+
             </div>
         </div>
 
@@ -77,7 +68,7 @@
         <div class="bg-blue-600 rounded-2xl p-12 text-center text-white">
             <h2 class="text-3xl font-bold mb-4">Have Questions?</h2>
             <p class="mb-6">Contact us today and our team will help you find the perfect products for your needs.</p>
-            <a href="{{ route('contact') }}" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">Contact Us</a>
+            <a href="" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">Contact Us</a>
         </div>
 
     </div>

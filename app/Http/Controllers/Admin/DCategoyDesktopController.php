@@ -5,57 +5,66 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage; // Make sure this model exists for multiple images
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DCategoyDesktopController extends Controller
 {
-    //
+    // Show products in desktop category
     public function index()
     {
-        $categories = Category::with('products')->find(2);
+        $categories = Category::with('products.images')->find(2); // load images too
         return view('admin.category.desktop', compact('categories'));
     }
+
+    // Update product
     public function update(Request $request, $id)
     {
-        // ✅ Find product
         $product = Product::findOrFail($id);
 
-        // ✅ Validate inputs
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'existing_images.*' => 'nullable|integer', // IDs of images to keep
         ]);
 
-        // ✅ Update image if new one uploaded
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($product->image && file_exists(public_path('storage/' . $product->image))) {
-                unlink(public_path('storage/' . $product->image));
-            }
+        // 1️⃣ Update product info
+        $product->update($request->only('name', 'description', 'price', 'stock', 'category_id'));
 
-            // Store new image
-            $imagePath = $request->file('image')->store('products', 'public');
-            $product->image = $imagePath;
+        // 2️⃣ Delete images removed by user
+        $existingImages = $request->input('existing_images', []); // IDs to keep
+        foreach ($product->images as $img) {
+            if (!in_array($img->id, $existingImages)) {
+                if (Storage::exists('public/' . $img->image)) {
+                    Storage::delete('public/' . $img->image);
+                }
+                $img->delete();
+            }
         }
 
-        // ✅ Update product data
-        $product->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'stock' => $request->stock,
-            'category_id' => $request->category_id,
-            'image' => $product->image, // keep old or update with new
-        ]);
+        // 3️⃣ Upload new images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('products', 'public');
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image' => $path,
+                ]);
+            }
+        }
 
-        // ✅ Redirect back with success
-        // return redirect()->route('admin.laptop.index')->with('success', 'Product updated successfully!');
+        // 4️⃣ Update main product image if empty
+        if ($product->images->count() > 0 && !$product->image) {
+            $product->update(['image' => $product->images->first()->image]);
+        }
+
         return redirect()
             ->route('admin.desktop.index')
-            ->with('success', 'Product updated successfully!');
+            ->with('success', '✅ Product updated successfully!');
     }
 }

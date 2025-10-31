@@ -79,22 +79,22 @@
     <!-- ✅ Swiper Container -->
     <div class="swiper mySwiper">
         <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <img src="https://picsum.photos/1920/1080?random=1" alt="Slide 1">
+            <div class="swiper-slide object-contain">
+                <img src="image/ban1.png" alt="Slide 1">
                 <div class="slide-content">
-                    <h2>Welcome to KM STORE</h2>
+                    {{-- <h2>Welcome to KM STORE</h2> --}}
                 </div>
             </div>
-            <div class="swiper-slide">
-                <img src="https://picsum.photos/1920/1080?random=2" alt="Slide 2">
+            <div class="swiper-slide object-contain ">
+                <img src="image/ban2.png" alt="Slide 2">
                 <div class="slide-content">
-                    <h2>Find the Best Tech Products</h2>
+                    {{-- <h2>Find the Best Tech Products</h2> --}}
                 </div>
             </div>
-            <div class="swiper-slide">
-                <img src="https://picsum.photos/1920/1080?random=3" alt="Slide 3">
+            <div class="swiper-slide object-contain">
+                <img src="image/ban3.png" alt="Slide 3">
                 <div class="slide-content">
-                    <h2>Exclusive Discounts Up to 30%</h2>
+                    {{-- <h2>Exclusive Discounts Up to 30%</h2> --}}
                 </div>
             </div>
         </div>
@@ -167,14 +167,14 @@
         </h1> --}}
 
             {{-- ✅ Product Grid --}}
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
                 @forelse ($products as $product)
                     <div
                         class="group bg-white rounded-2xl shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
                         <div class="relative">
                             <a href="{{ route('product.show', $product->id) }}">
                                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                                    class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
+                                    class="w-full h-80 object-contain group-hover:scale-105 transition-transform duration-500">
                             </a>
 
                             <div
@@ -196,7 +196,7 @@
                                 class="text-lg font-bold text-gray-800 truncate group-hover:text-indigo-600 transition-colors">
                                 {{ $product->name }}
                             </h2>
-                            <p class="text-sm text-gray-500 mt-1 line-clamp-2">
+                            <p class="text-sm text-gray-500 mt-1 line-clamp-1">
                                 {{ $product->description }}
                             </p>
 
@@ -251,21 +251,6 @@
         });
 
 
-        // const pageKey = window.location.pathname;
-
-        // // Save scroll position when leaving the page
-        // window.addEventListener("beforeunload", () => {
-        //     localStorage.setItem("scrollPosition_" + pageKey, window.scrollY);
-        // });
-
-        // // Restore scroll position on load
-        // window.addEventListener("load", () => {
-        //     const scrollY = localStorage.getItem("scrollPosition_" + pageKey);
-        //     if (scrollY) {
-        //         window.scrollTo(0, parseInt(scrollY));
-        //         localStorage.removeItem("scrollPosition_" + pageKey);
-        //     }
-        // });
     </script>
 
 @endsection

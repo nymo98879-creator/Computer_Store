@@ -15,14 +15,14 @@
         </div>
 
         {{-- 🛒 Product List --}}
-        <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
+        <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             @forelse ($category->products as $product)
                 <div
                     class="group bg-white rounded-2xl shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
                     {{-- Product Image --}}
                     <div class="relative">
                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                            class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
+                            class="w-full h-80 object-contain group-hover:scale-105 transition-transform duration-500">
 
                         {{-- Overlay --}}
                         <div
@@ -42,7 +42,7 @@
                             class="text-lg font-bold text-gray-800 truncate group-hover:text-indigo-600 transition-colors">
                             {{ $product->name }}
                         </h2>
-                        <p class="text-sm text-gray-500 mt-1 line-clamp-2">
+                        <p class="text-sm text-gray-500 mt-1 line-clamp-1">
                             {{ $product->description }}
                         </p>
 

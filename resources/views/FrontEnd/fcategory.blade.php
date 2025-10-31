@@ -101,7 +101,7 @@
                                     class="text-lg font-bold text-gray-800 truncate group-hover:text-indigo-600 transition-colors">
                                     {{ $product->name }}
                                 </h2>
-                                <p class="text-sm text-gray-500 mt-1 line-clamp-2">
+                                <p class="text-sm text-gray-500 mt-1 line-clamp-1">
                                     {{ $product->description }}
                                 </p>
 

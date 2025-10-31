@@ -26,7 +26,7 @@ class DProductController extends Controller
     {
         $products = Product::with(['category', 'images'])
             ->orderBy('id', 'asc')
-            ->paginate(10);
+            ->paginate(5);
 
         $categories = Category::orderBy('name', 'asc')->get();
         $lowStockProducts = Product::where('stock', '<=', 5)->get();
@@ -100,6 +100,9 @@ class DProductController extends Controller
     // ===============================
     // ✏️ Update Product (with images)
     // ===============================
+    // ===============================
+    // ✏️ Update Product (with multiple images)
+    // ===============================
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
@@ -113,30 +116,27 @@ class DProductController extends Controller
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
         ]);
 
-        // ✅ Update product info
-        $product->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'stock' => $request->stock,
-            'category_id' => $request->category_id,
-        ]);
+        // 1️⃣ Update product info
+        $product->update($request->only('name', 'description', 'price', 'stock', 'category_id'));
 
-        // ✅ Replace old images if new ones uploaded
-        if ($request->hasFile('images')) {
-            // Delete old images from storage
-            foreach ($product->images as $img) {
+        // 2️⃣ Handle deleted images
+        $existingImages = $request->input('existing_images', []); // IDs to keep
+        foreach ($product->images as $img) {
+            if (!in_array($img->id, $existingImages)) {
                 if (Storage::exists('public/' . $img->image)) {
                     Storage::delete('public/' . $img->image);
                 }
                 $img->delete();
             }
+        }
 
-            // Upload new images
-            foreach ($request->file('images') as $index => $file) {
+        // 3️⃣ Upload new images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
                 $path = $file->store('products', 'public');
 
-                if ($index === 0) {
+                // Set main product image if none exists
+                if (!$product->image) {
                     $product->update(['image' => $path]);
                 }
 
@@ -147,8 +147,62 @@ class DProductController extends Controller
             }
         }
 
+        // 4️⃣ Update main image if first image exists and main image was deleted
+        if ($product->images->count() > 0 && !$product->image) {
+            $product->update(['image' => $product->images->first()->image]);
+        }
+
         return redirect()->route('admin.products.index')->with('success', '✅ Product updated successfully!');
     }
+    // public function update(Request $request, $id)
+    // {
+    //     $product = Product::findOrFail($id);
+
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'description' => 'nullable|string',
+    //         'price' => 'required|numeric',
+    //         'stock' => 'required|integer',
+    //         'category_id' => 'required|exists:categories,id',
+    //         'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+    //     ]);
+
+    //     // ✅ Update product info
+    //     $product->update([
+    //         'name' => $request->name,
+    //         'description' => $request->description,
+    //         'price' => $request->price,
+    //         'stock' => $request->stock,
+    //         'category_id' => $request->category_id,
+    //     ]);
+
+    //     // ✅ Replace old images if new ones uploaded
+    //     if ($request->hasFile('images')) {
+    //         // Delete old images from storage
+    //         foreach ($product->images as $img) {
+    //             if (Storage::exists('public/' . $img->image)) {
+    //                 Storage::delete('public/' . $img->image);
+    //             }
+    //             $img->delete();
+    //         }
+
+    //         // Upload new images
+    //         foreach ($request->file('images') as $index => $file) {
+    //             $path = $file->store('products', 'public');
+
+    //             if ($index === 0) {
+    //                 $product->update(['image' => $path]);
+    //             }
+
+    //             ProductImage::create([
+    //                 'product_id' => $product->id,
+    //                 'image' => $path,
+    //             ]);
+    //         }
+    //     }
+
+    //     return redirect()->route('admin.products.index')->with('success', '✅ Product updated successfully!');
+    // }
 
     // ===============================
     // ❌ Delete Product (with images)

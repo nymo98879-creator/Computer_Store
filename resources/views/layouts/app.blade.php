@@ -16,41 +16,94 @@
 <body class="bg-gray-100 " x-data="{}">
 
     {{-- Navbar --}}
-    <header class="bg-white shadow-lg sticky top-0 z-50" x-data="{ openCart: false, openNav: false }">
-        <div class="container mx-auto px-6 md:px-10 flex items-center justify-between h-[70px]">
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-[2000px] mx-auto px-6  flex justify-between items-center h-[70px]">
 
-            <!-- Logo -->
+            {{-- LOGO --}}
             <div class="flex items-center space-x-3">
-                <i class="fa-solid fa-computer text-3xl text-blue-600"></i>
-                <h1 class="text-xl lg:text-3xl font-extrabold text-gray-800">
-                    KM <span class="text-blue-600">STORE</span>
+                <i class="fa-solid fa-computer text-4xl text-indigo-600"></i>
+                <h1 class="text-2xl font-extrabold text-gray-900">
+                    KM <span class="text-indigo-600">STORE</span>
                 </h1>
             </div>
 
-            <!-- Search + Filter -->
-            <div class="hidden md:flex flex-1 items-center justify-center space-x-4 max-w-2xl">
-                {{-- <form action="{{ route('product.search') }}" method="GET"
-                    class="flex flex-1 items-center bg-gray-50 border border-gray-300 rounded-full shadow-sm overflow-hidden p-1 space-x-2">
-                    <input type="text" name="search" placeholder="Search product..." value="{{ request('search') }}"
-                        class="flex-grow px-4 py-2 text-gray-700 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+            {{-- NAVIGATION --}}
+            <nav class="hidden lg:flex items-center space-x-10 font-medium text-gray-700">
+                <a href="{{ route('home') }}"
+                    class="{{ request()->routeIs('home') ? 'text-indigo-600 border-b-2 border-indigo-600 pb-1' : 'hover:text-indigo-600' }}">
+                    Home
+                </a>
 
-                    <input type="number" name="min_price" placeholder="Min $" value="{{ request('min_price') }}"
-                        class="w-20 px-3 py-2 text-gray-700 text-sm rounded-full border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
+                <a href="{{ route('front.product') }}"
+                    class="{{ request()->routeIs('front.product') ? 'text-indigo-600 border-b-2 border-indigo-600 pb-1' : 'hover:text-indigo-600' }}">
+                    Product
+                </a>
 
-                    <span class="text-gray-500">to</span>
-
-                    <input type="number" name="max_price" placeholder="Max $" value="{{ request('max_price') }}"
-                        class="w-20 px-3 py-2 text-gray-700 text-sm rounded-full border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
-
-                    <button type="submit"
-                        class="px-4 py-2 bg-indigo-600 text-white rounded-full shadow-md hover:bg-indigo-700 transition">
-                        Filter
+                {{-- Category Dropdown --}}
+                <div x-data="{ openCategory: false }" class="relative">
+                    <!-- Category Button -->
+                    <button @click="openCategory = !openCategory"
+                        class="flex items-center justify-between w-44 px-5 py-2.5 text-gray-700 bg-gray-50 border border-gray-200
+               rounded-full   hover:border-indigo-400 focus:ring-2 focus:ring-indigo-200
+               transition-all duration-300 font-medium">
+                        <span>
+                            <i class="fa-solid fa-layer-group mr-2 text-indigo-400"></i>
+                            Category
+                        </span>
+                        <i class="fa-solid fa-chevron-down ml-1 text-gray-400 text-sm transition-transform duration-300"
+                            :class="{ 'rotate-180 text-indigo-500': openCategory }"></i>
                     </button>
-                </form> --}}
+
+                    <!-- Dropdown Menu -->
+                    <div x-show="openCategory" x-transition @click.outside="openCategory = false"
+                        class="absolute left-0 mt-3 w-52  border border-gray-200 rounded-2xl shadow-lg
+               backdrop-blur-md bg-white/80 py-2 z-50">
+
+                        <a href="{{ route('flaptop') }}"
+                            class="flex items-center px-5 py-2.5 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition rounded-lg">
+                            <i class="fa-solid fa-laptop mr-2 text-indigo-400"></i> Laptop
+                        </a>
+
+                        <a href="{{ route('fdesktop') }}"
+                            class="flex items-center px-5 py-2.5 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition rounded-lg">
+                            <i class="fa-solid fa-desktop mr-2 text-indigo-400"></i> Desktop
+                        </a>
+
+                        <a href="{{ route('fnetwork') }}"
+                            class="flex items-center px-5 py-2.5 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition rounded-lg">
+                            <i class="fa-solid fa-network-wired mr-2 text-indigo-400"></i> Network
+                        </a>
+
+                        <a href="{{ route('faccessories') }}"
+                            class="flex items-center px-5 py-2.5 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition rounded-lg">
+                            <i class="fa-solid fa-headphones mr-2 text-indigo-400"></i> Accessories
+                        </a>
+                    </div>
+                </div>
+
+
+                <a href="{{ route('about') }}"
+                    class="{{ request()->routeIs('about') ? 'text-indigo-600 border-b-2 border-indigo-600 pb-1' : 'hover:text-indigo-600' }}">
+                    About
+                </a>
+
+                {{-- <a href="{{ route('contact') }}"
+                    class="{{ request()->routeIs('contact') ? 'text-indigo-600 border-b-2 border-indigo-600 pb-1' : 'hover:text-indigo-600' }}">
+                    Contact
+                </a> --}}
+            </nav>
+
+            {{-- RIGHT SIDE: Search, Filter, Cart, User --}}
+            <div class="flex items-center space-x-6">
+
+
+
+                {{-- PRICE FILTER --}}
                 <form action="{{ route('product.search') }}" method="GET"
                     class="flex flex-1 items-center bg-gray-50 border border-gray-300 rounded-full shadow-sm overflow-hidden p-1 space-x-2">
 
-                    <input type="text" name="search" placeholder="Search product..." value="{{ request('search') }}"
+                    <input type="text" name="search" placeholder="Search product..."
+                        value="{{ request('search') }}"
                         class="flex-grow px-4 py-2 text-gray-700 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
 
                     <select name="category"
@@ -64,13 +117,18 @@
                         <option value="accessories" {{ request('category') == 'accessories' ? 'selected' : '' }}>
                             Accessories</option>
                     </select>
-
+                    {{--
+                    <input type="number" name="min_price" placeholder="Min $" value="{{ request('min_price') }} "
+                        min="0" step="10"
+                        class="w-20 px-3 py-2 text-gray-700 text-sm rounded-full border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"> --}}
                     <input type="number" name="min_price" placeholder="Min $" value="{{ request('min_price') }}"
+                        min="0" step="10"
                         class="w-20 px-3 py-2 text-gray-700 text-sm rounded-full border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
 
                     <span class="text-gray-500">to</span>
 
                     <input type="number" name="max_price" placeholder="Max $" value="{{ request('max_price') }}"
+                        min="0" step="10"
                         class="w-20 px-3 py-2 text-gray-700 text-sm rounded-full border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
 
                     <button type="submit"
@@ -79,77 +137,36 @@
                     </button>
                 </form>
 
-            </div>
 
-            <!-- Right Icons -->
-            <div class="flex items-center space-x-4">
-
-                <!-- Dropdown Navigation -->
-                <div class="relative mr-10">
-                    <button @click="openNav = !openNav"
-                        class="flex items-center text-gray-700 hover:text-blue-600 font-medium focus:outline-none">
-                        Menu <i class="fa-solid fa-chevron-down ml-1"></i>
-                    </button>
-
-                    <div x-show="openNav" x-transition
-                        class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-xl border border-gray-200 py-2 z-50">
-                        <a href="{{ route('home') }}"
-                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Home</a>
-                        <a href="{{ route('front.product') }}"
-                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Products</a>
-                        <a href="{{ route('flaptop') }}"
-                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Laptop</a>
-                        <a href="{{ route('fdesktop') }}"
-                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Desktop</a>
-                        <a href="{{ route('fnetwork') }}"
-                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Network</a>
-                        <a href="{{ route('faccessories') }}"
-                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Accessories</a>
-                        <a href="{{ route('about') }}"
-                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">About
-                            Us</a>
-                        <a href="{{ route('contact') }}"
-                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Contact</a>
-                    </div>
-                </div>
-
-
-                <!-- 🛒 Cart -->
-                <div class="relative" x-data="{ openCart: false }">
-                    <i class="fa-solid fa-cart-shopping text-xl text-gray-700 hover:text-blue-600 cursor-pointer"
+                {{-- CART --}}
+                <div x-data="{ openCart: false }" class="relative">
+                    <i class="fa-solid fa-cart-shopping text-xl text-gray-700 hover:text-indigo-600 cursor-pointer"
                         @click="openCart = true"></i>
 
                     @php $cart = session('cart', []); @endphp
                     @if (count($cart) > 0)
-                        <span
-                            class="absolute -top-4 -right-2 bg-red-500 text-white text-xs rounded-full px-1">{{ count($cart) }}</span>
+                        <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full px-1">
+                            {{ count($cart) }}
+                        </span>
                     @endif
 
-                    <!-- Sidebar Cart: Slide from Right -->
-                    <div x-show="openCart" @click.outside="openCart = false"
-                        x-transition:enter="transition-transform duration-300"
-                        x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
-                        x-transition:leave="transition-transform duration-300" x-transition:leave-start="translate-x-0"
-                        x-transition:leave-end="translate-x-full"
-                        class="fixed top-0 right-0 w-[400px] md:w-[500px] h-full bg-white shadow-2xl z-50 p-6 overflow-y-auto rounded-l-2xl border-l border-gray-200">
-
-                        <!-- Header -->
+                    {{-- Cart Sidebar --}}
+                    <div x-show="openCart" x-transition
+                        class="fixed top-0 right-0 w-[450px] h-full bg-white shadow-2xl z-50 p-6 overflow-y-auto border-l border-gray-200"
+                        @click.outside="openCart = false">
                         <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-2xl font-bold text-gray-800">🛒 Your Cart</h2>
+                            <h2 class="text-2xl font-bold text-gray-800">Your Cart</h2>
                             <button @click="openCart = false"
-                                class="text-gray-400 hover:text-gray-600 text-lg transition">✕</button>
+                                class="text-gray-500 hover:text-gray-700 text-xl">✕</button>
                         </div>
-
-                        <!-- Cart Items -->
+                        {{-- Cart Items --}}
                         @if (count($cart) > 0)
                             <ul class="divide-y divide-gray-100">
                                 @foreach ($cart as $id => $item)
-                                    <li
-                                        class="py-4 flex items-center justify-between hover:bg-gray-50 rounded-xl px-2 transition">
+                                    <li class="py-4 flex justify-between items-center">
                                         <div class="flex items-center space-x-4">
-                                            <img src="{{ asset('storage/' . $item['image']) }}"
-                                                alt="{{ $item['name'] }}"
-                                                class="w-14 h-14 rounded-xl object-cover shadow-sm border border-gray-100">
+                                            <img src="{{ asset('storage/' . $item['image']) }}" alt=""
+                                                class="w-14 h-14 rounded-xl object-cover shadow">
                                             <div>
                                                 <p class="font-semibold text-gray-800">{{ $item['name'] }}</p>
                                                 <p class="text-sm text-gray-500">Qty: {{ $item['quantity'] }}</p>
@@ -157,20 +174,21 @@
                                         </div>
                                         <div class="text-right">
                                             <p class="text-green-600 font-semibold">
-                                                ${{ number_format($item['price'] * $item['quantity'], 2) }}</p>
+                                                ${{ number_format($item['price'] * $item['quantity'], 2) }}
+                                            </p>
                                             <form action="{{ route('cart.remove', $id) }}" method="POST">
                                                 @csrf
-                                                <input type="hidden" name="keep_cart_open" value="1">
                                                 <button type="submit"
-                                                    class="text-xs text-red-500 hover:text-red-700 font-medium transition">Remove</button>
+                                                    class="text-xs text-red-500 hover:text-red-700 transition">
+                                                    Remove
+                                                </button>
                                             </form>
                                         </div>
                                     </li>
                                 @endforeach
                             </ul>
 
-                            <!-- Checkout -->
-                            <div class="mt-8 border-t border-gray-200 pt-4">
+                            <div class="mt-6 border-t border-gray-200 pt-4">
                                 @if (session()->has('user_logged_in'))
                                     <form action="{{ route('order.store') }}" method="POST">
                                         @csrf
@@ -181,8 +199,12 @@
                                     </form>
                                 @else
                                     <button type="button"
-                                        @click.stop="loginForm.classList.remove('hidden'); registerForm.classList.add('hidden'); openCart = false;"
-                                        class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition">
+                                        @click.stop="
+                                            loginForm.classList.remove('hidden');
+                                            registerForm.classList.add('hidden');
+                                            openCart = false;
+                                        "
+                                        class="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition">
                                         Login to Checkout
                                     </button>
                                 @endif
@@ -190,111 +212,52 @@
                         @else
                             <div class="text-center mt-20">
                                 <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png"
-                                    class="w-24 mx-auto mb-4 opacity-70" alt="Empty Cart">
+                                    class="w-24 mx-auto mb-4 opacity-70" alt="">
                                 <p class="text-gray-500 text-lg">Your cart is empty 🛍️</p>
                             </div>
                         @endif
                     </div>
                 </div>
+                <!-- ✅ Order Success Popup -->
+                @if (session('order_success'))
+                    <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 5000)"
+                        {{-- auto hide after 5s --}}
+                        class="fixed inset-0 flex items-center justify-center bg-black/50 z-[9999] w-full">
+                        <div class="bg-white rounded-2xl shadow-2xl p-8 text-center max-w-sm w-full sm:w-full transform transition-all duration-300"
+                            x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
+                            x-transition:enter-end="opacity-100 scale-100" x-transition:leave="ease-in duration-200"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-90">
+                            <i class="fa-solid fa-circle-check text-green-500 text-6xl mb-4 animate-bounce"></i>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Order Successful!</h2>
+                            <p class="text-gray-600">{{ session('order_success') }}</p>
 
-                {{-- <div class="relative mr-10">
-                <i class="fa-solid fa-cart-shopping text-xl text-gray-700 hover:text-blue-600 cursor-pointer"
-                    @click="openCart = true"></i>
-
-                @php $cart = session('cart', []); @endphp
-                @if (count($cart) > 0)
-                    <span class="absolute -top-4 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
-                        {{ count($cart) }}
-                    </span>
+                            <button @click="show = false"
+                                class="mt-5 bg-indigo-600 text-white px-6 py-2 rounded-full font-medium hover:bg-indigo-700 transition">
+                                Continue Shopping
+                            </button>
+                        </div>
+                    </div>
                 @endif
 
-                <!-- 🧾 Cart Sidebar -->
-                <div x-show="openCart" x-transition
-                    class="fixed top-0 right-0 w-[400px] md:w-[500px] h-full bg-white shadow-2xl z-50 p-6 overflow-y-auto rounded-l-2xl border-l border-gray-200"
-                    @click.outside="openCart = false">
 
-                    <!-- Header -->
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-2xl font-bold text-gray-800">🛒 Your Cart</h2>
-                        <button @click="openCart = false"
-                            class="text-gray-400 hover:text-gray-600 text-lg transition">✕</button>
-                    </div>
-
-                    <!-- Cart Content -->
-                    @if (count($cart) > 0)
-                        <ul class="divide-y divide-gray-100">
-                            @foreach ($cart as $id => $item)
-                                <li class="py-4 flex items-center justify-between hover:bg-gray-50 rounded-xl px-2 transition">
-                                    <div class="flex items-center space-x-4">
-                                        <img src="{{ asset('storage/' . $item['image']) }}" alt="{{ $item['name'] }}"
-                                            class="w-14 h-14 rounded-xl object-cover shadow-sm border border-gray-100">
-                                        <div>
-                                            <p class="font-semibold text-gray-800">{{ $item['name'] }}</p>
-                                            <p class="text-sm text-gray-500">Qty: {{ $item['quantity'] }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="text-green-600 font-semibold">
-                                            ${{ number_format($item['price'] * $item['quantity'], 2) }}
-                                        </p>
-                                        <form action="{{ route('cart.remove', $id) }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="keep_cart_open" value="1">
-                                            <button type="submit"
-                                                class="text-xs text-red-500 hover:text-red-700 font-medium transition">
-                                                Remove
-                                            </button>
-                                        </form>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-
-                        <!-- Checkout Section -->
-                        <div class="mt-8 border-t border-gray-200 pt-4">
-                            @if (session()->has('user_logged_in'))
-                                <form action="{{ route('order.store') }}" method="POST">
-                                    @csrf
-                                    <button type="submit"
-                                        class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition">
-                                        Proceed to Checkout
-                                    </button>
-                                </form>
-                            @else
-                                <button type="button"
-                                    @click.stop="loginForm.classList.remove('hidden'); registerForm.classList.add('hidden'); openCart = false;"
-                                    class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition">
-                                    Login to Checkout
-                                </button>
-                            @endif
-                        </div>
-                    @else
-                        <!-- Empty Cart -->
-                        <div class="text-center mt-20">
-                            <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png"
-                                class="w-24 mx-auto mb-4 opacity-70" alt="Empty Cart">
-                            <p class="text-gray-500 text-lg">Your cart is empty 🛍️</p>
-                        </div>
-                    @endif
-                </div>
-            </div> --}}
-
-                <!-- 👤 User -->
-                <div>
+                {{-- USER ICON --}}
+                <div class="flex items-center space-x-3">
                     @if (!session()->has('user_logged_in'))
                         <i id="user"
-                            class="fa-solid fa-user text-xl text-gray-700 hover:text-blue-600 cursor-pointer"></i>
+                            class="fa-solid fa-user text-xl text-gray-700 hover:text-indigo-600 cursor-pointer"></i>
                     @else
                         <span class="text-gray-700 font-medium">{{ session('user_name') }}</span>
-                        <a href="{{ route('customer.logout') }}"
-                            class="text-gray-700 hover:text-red-500 transition ml-2" title="Logout">
-                            <i class="fa-solid fa-right-from-bracket text-xl"></i>
+                        <a href="{{ route('customer.logout') }}" class="text-gray-700 hover:text-red-500 transition"
+                            title="Logout">
+                            <i class="fa-solid fa-right-from-bracket text-2xl"></i>
                         </a>
                     @endif
                 </div>
             </div>
         </div>
     </header>
+
 
 
     {{-- LOGIN FORM --}}

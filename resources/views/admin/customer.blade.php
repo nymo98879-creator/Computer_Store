@@ -6,9 +6,9 @@
     <div class="p-6 bg-gray-100 min-h-screen">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">Customers</h1>
 
-        <div class="bg-white shadow-lg rounded-2xl p-6">
+        <div class="bg-white shadow-lg rounded-2xl p-6  overflow-y-auto max-h-[610px]">
             <table class="w-full text-sm text-left border-collapse">
-                <thead class="bg-gray-200 text-gray-700 uppercase text-sm">
+                <thead class="bg-gray-200 text-gray-700 uppercase text-sm sticky top-0 z-10">
                     <tr>
                         <th class="px-6 py-3">ID</th>
                         <th class="px-6 py-3">Name</th>

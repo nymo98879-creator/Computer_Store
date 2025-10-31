@@ -5,18 +5,22 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductImage; // new model for multiple images
+use App\Models\ProductImage; // model for multiple images
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class DCategoyLaptopController extends Controller
+class DCategoryNetworkController extends Controller
 {
+    // Show all Network products
     public function index()
     {
-        $category = Category::with('products.images')->find(1); // eager load images
-        return view('admin.category.laptop', compact('category'));
+        // Assuming category ID for Network is 4, adjust as needed
+        $category = Category::with('products.images')->find(4);
+
+        return view('admin.category.network', compact('category'));
     }
 
+    // Update a network product
     public function update(Request $request, $id)
     {
         $product = Product::with('images')->findOrFail($id);
@@ -59,6 +63,24 @@ class DCategoyLaptopController extends Controller
             }
         }
 
-        return redirect()->route('admin.laptop.index')->with('success', 'Product updated successfully!');
+        return redirect()->route('admin.network.index')->with('success', 'Network product updated successfully!');
+    }
+
+    // Delete a network product
+    public function destroy($id)
+    {
+        $product = Product::with('images')->findOrFail($id);
+
+        // Delete images from storage
+        foreach ($product->images as $img) {
+            if (Storage::disk('public')->exists($img->image)) {
+                Storage::disk('public')->delete($img->image);
+            }
+            $img->delete();
+        }
+
+        $product->delete();
+
+        return redirect()->route('admin.network.index')->with('success', 'Network product deleted successfully!');
     }
 }
